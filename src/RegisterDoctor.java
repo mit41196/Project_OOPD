@@ -24,6 +24,8 @@ import java.sql.Statement;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JTextPane;
+import javax.swing.JPasswordField;
 
 public class RegisterDoctor extends JFrame {
 
@@ -44,6 +46,8 @@ public class RegisterDoctor extends JFrame {
 	private JButton btnLogout;
 	private JButton btnBack;
 	private JComboBox comboBox_doc_precedence;
+	private JLabel lblPassword;
+	private JPasswordField passwordField;
 
 	/**
 	 * Launch the application.
@@ -75,7 +79,7 @@ public class RegisterDoctor extends JFrame {
 	 */
 	public RegisterDoctor() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 377);
+		setBounds(100, 100, 450, 418);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -105,6 +109,8 @@ public class RegisterDoctor extends JFrame {
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("default:grow"),
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
@@ -181,6 +187,18 @@ public class RegisterDoctor extends JFrame {
 		
 		contentPane.add(comboBox_doc_precedence, "4, 18, fill, default");
 		
+		btnLogout = new JButton("Logout");
+		btnLogout.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				close();
+				start st = new start();
+				st.setVisible(true);
+			}
+		});
+		
 		
 		btnRegister = new JButton("Register");
 		
@@ -191,6 +209,7 @@ public class RegisterDoctor extends JFrame {
 				// TODO Auto-generated method stub
 				
 				String nameField = name.getText();
+				String password = passwordField.getText();
 				String addressField = address.getText();
 				String contactField = contact.getText();
 				String emailField = email.getText();
@@ -204,10 +223,11 @@ public class RegisterDoctor extends JFrame {
 					Class.forName("com.mysql.jdbc.Driver");
 					Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
 					Statement s2=c.createStatement();
-					s2.executeUpdate("Insert into doctor (name, address, contact, email, category, scheduled_days, timings, doctor_position) values ('"+nameField+"', '"+addressField+"', '"+contactField+"', '"+emailField+"', '"+categoryField+"', '"+scheduleField+"', '"+timingField+"', '"+doctorPrecedenceField+"')");
-					s2.executeUpdate("Insert into "+categoryField+"(name, address, contact, email, category, scheduled_days, timings, doctor_position) values ('"+nameField+"', '"+addressField+"', '"+contactField+"', '"+emailField+"', '"+categoryField+"', '"+scheduleField+"', '"+timingField+"', '"+doctorPrecedenceField+"')");
+					s2.executeUpdate("Insert into doctor (name, address, contact, email, category, scheduled_days, timings, doctor_position,passwordfield) values ('"+nameField+"', '"+addressField+"', '"+contactField+"', '"+emailField+"', '"+categoryField+"', '"+scheduleField+"', '"+timingField+"', '"+doctorPrecedenceField+"','"+password+"')");
+					s2.executeUpdate("Insert into "+categoryField+"(name, address, contact, email, category, scheduled_days, timings, doctor_position,passwordfield) values ('"+nameField+"', '"+addressField+"', '"+contactField+"', '"+emailField+"', '"+categoryField+"', '"+scheduleField+"', '"+timingField+"', '"+doctorPrecedenceField+"','"+password+"')");
 					name.setText("");
 					address.setText("");
+					passwordField.setText("");
 					contact.setText("");
 					email.setText("");
 					scheduledDays.setText("");
@@ -225,7 +245,6 @@ public class RegisterDoctor extends JFrame {
 				
 			}
 		});
-		contentPane.add(btnRegister, "4, 22");
 		btnBack = new JButton("Back");
 		
 		btnBack.addActionListener(new ActionListener() {
@@ -239,22 +258,17 @@ public class RegisterDoctor extends JFrame {
 			}
 		});
 		
-		contentPane.add(btnBack, "2, 22");
+		lblPassword = new JLabel("Password");
+		contentPane.add(lblPassword, "2, 22, right, default");
 		
-		btnLogout = new JButton("Logout");
-		btnLogout.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				close();
-				start st = new start();
-				st.setVisible(true);
-			}
-		});
+		passwordField = new JPasswordField();
+		contentPane.add(passwordField, "4, 22, fill, default");
+		
+		contentPane.add(btnBack, "2, 26");
+		contentPane.add(btnRegister, "4, 26");
 		
 		
-		contentPane.add(btnLogout, "4, 24");
+		contentPane.add(btnLogout, "4, 28");
 	}
 
 }

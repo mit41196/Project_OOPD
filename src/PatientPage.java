@@ -54,6 +54,15 @@ public class PatientPage extends JFrame {
 		contentPane.add(lblWelcome);
 		
 		JButton btnSearchDoctor = new JButton("Search Doctor");
+		btnSearchDoctor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				//close();
+				SearchDoctor searchdoctor = new SearchDoctor();
+				searchdoctor.setVisible(true);
+			}
+		});
+		
 		btnSearchDoctor.setBounds(61, 79, 297, 23);
 		contentPane.add(btnSearchDoctor);
 		

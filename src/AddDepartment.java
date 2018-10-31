@@ -59,7 +59,7 @@ public class AddDepartment extends JFrame {
 		contentPane.add(lblAddDepartment);
 		
 		JLabel lblDepartmentName = new JLabel("Department Name:");
-		lblDepartmentName.setBounds(39, 96, 97, 14);
+		lblDepartmentName.setBounds(0, 96, 91, 14);
 		contentPane.add(lblDepartmentName);
 		
 		textField = new JTextField();
@@ -68,7 +68,7 @@ public class AddDepartment extends JFrame {
 		textField.setColumns(10);
 		
 		JLabel lblDepartmentHod = new JLabel("Department HOD:");
-		lblDepartmentHod.setBounds(39, 144, 97, 14);
+		lblDepartmentHod.setBounds(0, 144, 86, 14);
 		contentPane.add(lblDepartmentHod);
 		
 		JComboBox comboBox = new JComboBox();

@@ -5,7 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import net.proteanit.sql.DbUtils;
+//import net.proteanit.sql.DbUtils;
 
 import javax.swing.JComboBox;
 import java.sql.*;
@@ -91,7 +91,7 @@ public class ViewDetails_Admin extends JFrame {
 					Connection c = DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
 					Statement st = c.createStatement();
 					ResultSet rs = st.executeQuery("Select * from doctor");
-					table.setModel(DbUtils.resultSetToTableModel(rs));
+					//table.setModel(DbUtils.resultSetToTableModel(rs));
 				}
 				catch (ClassNotFoundException | SQLException e1) 
 				{
@@ -101,7 +101,7 @@ public class ViewDetails_Admin extends JFrame {
 				
 			}
 		});
-		btnViewDoctor.setBounds(156, 42, 89, 23);
+		btnViewDoctor.setBounds(156, 42, 128, 23);
 		contentPane.add(btnViewDoctor);
 		
 		btnBack = new JButton("Back");
