@@ -18,18 +18,18 @@ public class PatientPage extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PatientPage frame = new PatientPage();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					PatientPage frame = new PatientPage();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 	
 	public void close()
 	{
@@ -40,7 +40,7 @@ public class PatientPage extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public PatientPage() {
+	public PatientPage(String user_name) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -66,20 +66,29 @@ public class PatientPage extends JFrame {
 		btnSearchDoctor.setBounds(61, 79, 297, 23);
 		contentPane.add(btnSearchDoctor);
 		
-		JButton button = new JButton("View Profile");
-		button.setBounds(61, 113, 297, 23);
-		contentPane.add(button);
+		JButton viewYourProfile = new JButton("View Profile");
+		viewYourProfile.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				ViewPatientProfile vpp = new ViewPatientProfile(user_name);
+				vpp.setVisible(true);
+				
+			}
+		});
 		
-		JButton btnEditProfile = new JButton("Edit Profile");
-		btnEditProfile.setBounds(61, 147, 297, 23);
-		contentPane.add(btnEditProfile);
+		
+		
+		viewYourProfile.setBounds(61, 113, 297, 23);
+		contentPane.add(viewYourProfile);
 		
 		JButton btnViewDoctorsProfile = new JButton("View Doctors Profile");
 		btnViewDoctorsProfile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnViewDoctorsProfile.setBounds(61, 181, 297, 23);
+		btnViewDoctorsProfile.setBounds(61, 147, 297, 23);
 		contentPane.add(btnViewDoctorsProfile);
 		
 		JButton btnLogout = new JButton("Logout");
@@ -94,7 +103,7 @@ public class PatientPage extends JFrame {
 				
 			}
 		});
-		btnLogout.setBounds(61, 215, 297, 23);
+		btnLogout.setBounds(61, 181, 297, 23);
 		contentPane.add(btnLogout);
 	}
 

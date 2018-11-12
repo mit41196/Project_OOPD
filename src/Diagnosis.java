@@ -21,18 +21,18 @@ public class Diagnosis extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Diagnosis frame = new Diagnosis();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					Diagnosis frame = new Diagnosis();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 	public void close()
 	{
 		WindowEvent closeEvent = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
@@ -41,7 +41,7 @@ public class Diagnosis extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Diagnosis() {
+	public Diagnosis(String user_name) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -73,7 +73,7 @@ public class Diagnosis extends JFrame {
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				close();
-				Doctor_Home dh=new Doctor_Home();
+				Doctor_Home dh=new Doctor_Home(user_name);
 				dh.setVisible(true);
 			}
 		});

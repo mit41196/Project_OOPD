@@ -8,8 +8,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -38,12 +40,19 @@ public class login_Patient extends JFrame {
 			}
 		});
 	}
+	
+	public void close()
+	{
+		WindowEvent closeEvent = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
+		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(closeEvent);
+	}
+
 
 	/**
 	 * Create the frame.
 	 */
 	public login_Patient() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -87,7 +96,7 @@ public class login_Patient extends JFrame {
 				
 					Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
 					Statement st=c.createStatement();
-					ResultSet rs=st.executeQuery("Select * from loginPatient");
+					ResultSet rs=st.executeQuery("Select * from loginPatient where uniqueId = '"+username+"'");
 					while(rs.next())
 					{
 						userId = rs.getString("uniqueId");
@@ -100,9 +109,12 @@ public class login_Patient extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				System.out.println(userId + password + " " + username + pass);
 				if(username.equals(userId) && pass.equals(password))
 				{
-					JOptionPane.showMessageDialog(contentPane, "Login Successfull","Success", JOptionPane.INFORMATION_MESSAGE);
+					close();
+					PatientPage pp = new PatientPage(username);
+					pp.setVisible(true);
 				}
 				else
 				{

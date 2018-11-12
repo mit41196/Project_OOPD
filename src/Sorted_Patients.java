@@ -18,18 +18,18 @@ public class Sorted_Patients extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Sorted_Patients frame = new Sorted_Patients();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					Sorted_Patients frame = new Sorted_Patients();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 	public void close()
 	{
 		WindowEvent closeEvent = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
@@ -38,7 +38,7 @@ public class Sorted_Patients extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Sorted_Patients() {
+	public Sorted_Patients(String user_name) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -54,7 +54,7 @@ public class Sorted_Patients extends JFrame {
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				close();
-				List_Of_Patients lop=new List_Of_Patients();
+				List_Of_Patients lop=new List_Of_Patients(user_name);
 				lop.setVisible(true);
 			}
 		});

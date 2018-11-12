@@ -48,7 +48,7 @@ public class AdminPage extends JFrame {
 	 */
 	public AdminPage() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 364);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -76,7 +76,7 @@ public class AdminPage extends JFrame {
 		contentPane.add(btnNewButton_1);
 		
 		JButton btnLogout = new JButton("Logout");
-		btnLogout.setBounds(54, 221, 301, 23);
+		btnLogout.setBounds(54, 259, 301, 23);
 		
 		btnLogout.addActionListener(new ActionListener() {
 			
@@ -138,6 +138,10 @@ public class AdminPage extends JFrame {
 		});
 		btnRemoveDoctor.setBounds(54, 85, 301, 23);
 		contentPane.add(btnRemoveDoctor);
+		
+		JButton btnUpdateDepartment = new JButton("Update Department");
+		btnUpdateDepartment.setBounds(54, 225, 301, 23);
+		contentPane.add(btnUpdateDepartment);
 		
 			}
 }

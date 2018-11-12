@@ -1,4 +1,3 @@
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -8,8 +7,14 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -36,12 +41,18 @@ public class login_Doctor extends JFrame {
 			}
 		});
 	}
+	
+	public void close()
+	{
+		WindowEvent closeEvent = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
+		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(closeEvent);
+	}
 
 	/**
 	 * Create the frame.
 	 */
 	public login_Doctor() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -75,17 +86,39 @@ public class login_Doctor extends JFrame {
 				// TODO Auto-generated method stub
 				String password = passwordField_Doctor.getText();
 				String user_name = username_Doctor.getText();
-				
-				if(user_name.equals("hello") && password.equals("qwerty"))
+				String userId ="";
+				String pass = "";
+						
+				System.out.println(user_name + password);
+				try 
 				{
-					AdminPage adminPage = new AdminPage();
-					adminPage.setVisible(true);
+					Class.forName("com.mysql.jdbc.Driver");
+				
+					Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
+					Statement st=c.createStatement();
+					ResultSet rs=st.executeQuery("Select * from logindoctor where username = '"+user_name+"'");
+					while(rs.next())
+					{
+						userId = rs.getString("username");
+						pass = rs.getString("password");
+					}
+				}
+				catch(Exception ex)
+				{
+					ex.printStackTrace();
+				}
+				System.out.println(userId + pass);
+				if(user_name.equals(userId) && pass.equals(password))
+				{
+					close();
+					Doctor_Home dh = new Doctor_Home(user_name);
+					dh.setVisible(true);
 				}
 				else
 				{
 					username_Doctor.setText("");
 					passwordField_Doctor.setText("");
-					JOptionPane.showMessageDialog(contentPane, "Invalid Username or Password..!", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(contentPane, "Invalid Credentials!!","Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});

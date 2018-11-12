@@ -9,37 +9,43 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.awt.event.ActionEvent;
 
 public class Edit_Doctor extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
+	private JTextField nameField;
+	private JTextField addressField;
+	private JTextField contactField;
+	private JTextField emailField;
+	private JTextField daysField;
 	private JTextField textField_5;
-	private JTextField textField_6;
+	JComboBox dept = new JComboBox();
+	JComboBox doctor_precedence = new JComboBox();
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Edit_Doctor frame = new Edit_Doctor();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					Edit_Doctor frame = new Edit_Doctor();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 	public void close()
 	{
 		WindowEvent closeEvent = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
@@ -48,7 +54,63 @@ public class Edit_Doctor extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Edit_Doctor() {
+	
+	private void fillComboBoxId()
+	{
+		try 
+		{
+			Class.forName("com.mysql.jdbc.Driver");
+		
+			Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
+			Statement st=c.createStatement();
+			ResultSet rs=st.executeQuery("Select * from department");
+			while(rs.next())
+			{
+				String dept_name = rs.getString("dept_name");
+				dept.addItem(dept_name);
+			}
+		}
+		catch(Exception e1)
+		{
+			e1.printStackTrace();
+		}
+	}
+	
+	public Edit_Doctor(String user_name) {
+		
+		String name = "";
+		String address = "";
+		String contact = "";
+		String email = "";
+		String category = "";
+		String doctor_position = "";
+		String username = "";
+		String scheduled_days = "";
+		
+		try
+		{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
+			Statement s2=c.createStatement();
+			ResultSet rs = s2.executeQuery("Select * from doctor where username = '"+user_name+"'");
+			while(rs.next())
+			{
+				name = rs.getString("name");
+				address = rs.getString("address");
+				contact = rs.getString("contact");
+				email = rs.getString("email");
+				category = rs.getString("category");
+				doctor_position = rs.getString("doctor_position");
+				scheduled_days = rs.getString("scheduled_days");
+				username = rs.getString("username");
+			}
+		}
+		catch(Exception e1)
+		{
+			e1.printStackTrace();
+		}
+		
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 517);
 		contentPane = new JPanel();
@@ -92,66 +154,91 @@ public class Edit_Doctor extends JFrame {
 		lblDoctorPrecedence.setBounds(89, 220, 167, 15);
 		contentPane.add(lblDoctorPrecedence);
 		
-		JLabel lblPassword = new JLabel("PASSWORD:");
-		lblPassword.setBounds(89, 247, 146, 15);
-		contentPane.add(lblPassword);
-		
 		JButton btnBack = new JButton("BACK");
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				close();
-				View_Doctor_Profile vdp =  new View_Doctor_Profile();
+				View_Doctor_Profile vdp =  new View_Doctor_Profile(user_name);
 				vdp.setVisible(true);
 			}
 		});
 		btnBack.setBounds(12, 293, 117, 25);
 		contentPane.add(btnBack);
 		
-		JButton btnLogout = new JButton("UPDATE");
-		btnLogout.setBounds(285, 293, 117, 25);
-		contentPane.add(btnLogout);
+		JButton btnUpdate = new JButton("UPDATE");
+		btnUpdate.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				String updated_name = nameField.getText();
+				String updated_address = addressField.getText();
+				String updated_contact = contactField.getText();
+				String updated_email = emailField.getText();
+				String updated_days = daysField.getText();
+				String updated_category = (String)dept.getSelectedItem();
+				String updated_position = (String)doctor_precedence.getSelectedItem();
+				
+				try 
+				{
+					Class.forName("com.mysql.jdbc.Driver");
+				
+					Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
+					Statement st=c.createStatement();
+					st.executeUpdate("Update doctor SET name='"+updated_name+"', address='"+updated_address+"', contact='"+updated_contact+"',email='"+updated_email+"',category='"+updated_category+"', scheduled_days='"+updated_days+"', doctor_position='"+updated_position+"' where username='"+user_name+"'");
+					JOptionPane.showMessageDialog(contentPane, "Updated Successfully...!","Success", JOptionPane.INFORMATION_MESSAGE);
+				}
+				catch(Exception e1)
+				{
+					e1.printStackTrace();
+				}
+				
+			}
+		});
+		btnUpdate.setBounds(285, 293, 117, 25);
+		contentPane.add(btnUpdate);
 		
-		textField = new JTextField();
-		textField.setBounds(266, 37, 114, 19);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		nameField = new JTextField(name);
+		nameField.setBounds(266, 37, 114, 19);
+		contentPane.add(nameField);
+		nameField.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(266, 64, 114, 19);
-		contentPane.add(textField_1);
-		textField_1.setColumns(10);
+		addressField = new JTextField(address);
+		addressField.setBounds(266, 64, 114, 19);
+		contentPane.add(addressField);
+		addressField.setColumns(10);
 		
-		textField_2 = new JTextField();
-		textField_2.setBounds(266, 91, 114, 19);
-		contentPane.add(textField_2);
-		textField_2.setColumns(10);
+		contactField = new JTextField(contact);
+		contactField.setBounds(266, 91, 114, 19);
+		contentPane.add(contactField);
+		contactField.setColumns(10);
 		
-		textField_3 = new JTextField();
-		textField_3.setBounds(266, 115, 114, 19);
-		contentPane.add(textField_3);
-		textField_3.setColumns(10);
+		emailField = new JTextField(email);
+		emailField.setBounds(266, 115, 114, 19);
+		contentPane.add(emailField);
+		emailField.setColumns(10);
 		
-		textField_4 = new JTextField();
-		textField_4.setBounds(266, 169, 114, 19);
-		contentPane.add(textField_4);
-		textField_4.setColumns(10);
+		daysField = new JTextField(scheduled_days);
+		daysField.setBounds(266, 169, 114, 19);
+		contentPane.add(daysField);
+		daysField.setColumns(10);
 		
 		textField_5 = new JTextField();
 		textField_5.setBounds(266, 196, 114, 19);
 		contentPane.add(textField_5);
 		textField_5.setColumns(10);
 		
-		textField_6 = new JTextField();
-		textField_6.setBounds(266, 245, 114, 19);
-		contentPane.add(textField_6);
-		textField_6.setColumns(10);
+		fillComboBoxId();
+		dept.setSelectedItem(category);
+		dept.setBounds(263, 139, 117, 24);
+		contentPane.add(dept);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(263, 139, 117, 24);
-		contentPane.add(comboBox);
-		
-		JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.setBounds(266, 215, 114, 24);
-		contentPane.add(comboBox_1);
+		doctor_precedence.setSelectedItem(doctor_position);
+		doctor_precedence.addItem("Junior Residents");
+		doctor_precedence.addItem("Senior Residents");
+		doctor_precedence.addItem("Specialists");
+		doctor_precedence.addItem("Senior Specialists");
+		doctor_precedence.setBounds(266, 215, 114, 24);
+		contentPane.add(doctor_precedence);
 	}
 }

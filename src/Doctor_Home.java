@@ -18,18 +18,18 @@ public class Doctor_Home extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Doctor_Home frame = new Doctor_Home();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					Doctor_Home frame = new Doctor_Home();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	public void close()
 	{
@@ -39,7 +39,7 @@ public class Doctor_Home extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Doctor_Home() {
+	public Doctor_Home(String user_name) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -55,7 +55,7 @@ public class Doctor_Home extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				close();
-				View_Doctor_Profile vdp=new View_Doctor_Profile();
+				View_Doctor_Profile vdp=new View_Doctor_Profile(user_name);
 				vdp.setVisible(true);
 			}
 		});
@@ -66,7 +66,7 @@ public class Doctor_Home extends JFrame {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				close();
-				List_Of_Patients lop=new List_Of_Patients();
+				List_Of_Patients lop=new List_Of_Patients(user_name);
 				lop.setVisible(true);
 			}
 		});
@@ -88,7 +88,7 @@ public class Doctor_Home extends JFrame {
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				close();
-				Diagnosis dg =new Diagnosis();
+				Diagnosis dg =new Diagnosis(user_name);
 				dg.setVisible(true);
 			}
 		});

@@ -10,6 +10,9 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
@@ -18,7 +21,8 @@ import javax.swing.JButton;
 public class AddDepartment extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
+	private JTextField deptIdField;
+	private JTextField deptNameField;
 
 	/**
 	 * Launch the application.
@@ -59,28 +63,53 @@ public class AddDepartment extends JFrame {
 		contentPane.add(lblAddDepartment);
 		
 		JLabel lblDepartmentName = new JLabel("Department Name:");
-		lblDepartmentName.setBounds(0, 96, 91, 14);
+		lblDepartmentName.setBounds(33, 96, 113, 14);
 		contentPane.add(lblDepartmentName);
 		
-		textField = new JTextField();
-		textField.setBounds(146, 93, 251, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		deptNameField = new JTextField();
+		deptNameField.setBounds(156, 93, 251, 20);
+		contentPane.add(deptNameField);
+		deptNameField.setColumns(10);
 		
-		JLabel lblDepartmentHod = new JLabel("Department HOD:");
-		lblDepartmentHod.setBounds(0, 144, 86, 14);
+		deptIdField = new JTextField();
+		deptIdField.setBounds(156, 141, 251, 20);
+		contentPane.add(deptIdField);
+		deptIdField.setColumns(10);
+		
+		JLabel lblDepartmentHod = new JLabel("Department id:");
+		lblDepartmentHod.setBounds(38, 144, 108, 14);
 		contentPane.add(lblDepartmentHod);
-		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(146, 141, 251, 20);
-		contentPane.add(comboBox);
-		
+				
 		JButton btnAdd = new JButton("Add");
-		btnAdd.setBounds(291, 215, 106, 23);
+		btnAdd.setBounds(146, 212, 106, 23);
+		btnAdd.addActionListener(new ActionListener() {
+			
+			
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				String did = deptIdField.getText();
+				String dname = deptNameField.getText();
+				String dhod = "";
+				
+				try
+				{
+					Class.forName("com.mysql.jdbc.Driver");
+					Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
+					Statement s2=c.createStatement();
+					s2.executeUpdate("Insert into department(dept_name, dept_id, dept_hod) values ('"+dname+"', '"+did+"', '"+dhod+"')");
+				}
+				catch(Exception e1)
+				{
+					e1.printStackTrace();
+				}
+			}
+		});
 		contentPane.add(btnAdd);
 		
 		JButton btnBack = new JButton("Back");
-		btnBack.setBounds(146, 215, 106, 23);
+		btnBack.setBounds(291, 212, 106, 23);
 		
 		btnBack.addActionListener(new ActionListener() {
 			
@@ -94,5 +123,7 @@ public class AddDepartment extends JFrame {
 			}
 		});
 		contentPane.add(btnBack);
+		
+	
 	}
 }

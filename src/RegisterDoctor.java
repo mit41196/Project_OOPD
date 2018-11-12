@@ -48,6 +48,8 @@ public class RegisterDoctor extends JFrame {
 	private JComboBox comboBox_doc_precedence;
 	private JLabel lblPassword;
 	private JPasswordField passwordField;
+	private JLabel lblUsername;
+	private JTextField usernameField;
 
 	/**
 	 * Launch the application.
@@ -187,6 +189,10 @@ public class RegisterDoctor extends JFrame {
 		
 		contentPane.add(comboBox_doc_precedence, "4, 18, fill, default");
 		
+		usernameField = new JTextField();
+		contentPane.add(usernameField, "4, 20, fill, default");
+		usernameField.setColumns(10);
+		
 		btnLogout = new JButton("Logout");
 		btnLogout.addActionListener(new ActionListener() {
 			
@@ -217,14 +223,16 @@ public class RegisterDoctor extends JFrame {
 				String scheduleField = scheduledDays.getText();
 				String timingField = timings.getText();
 				String doctorPrecedenceField = (String)comboBox_doc_precedence.getSelectedItem();
-				
+				String userField = usernameField.getText();
+				String passField = passwordField.getText();
 				try
 				{
 					Class.forName("com.mysql.jdbc.Driver");
 					Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
 					Statement s2=c.createStatement();
-					s2.executeUpdate("Insert into doctor (name, address, contact, email, category, scheduled_days, timings, doctor_position,passwordfield) values ('"+nameField+"', '"+addressField+"', '"+contactField+"', '"+emailField+"', '"+categoryField+"', '"+scheduleField+"', '"+timingField+"', '"+doctorPrecedenceField+"','"+password+"')");
-					s2.executeUpdate("Insert into "+categoryField+"(name, address, contact, email, category, scheduled_days, timings, doctor_position,passwordfield) values ('"+nameField+"', '"+addressField+"', '"+contactField+"', '"+emailField+"', '"+categoryField+"', '"+scheduleField+"', '"+timingField+"', '"+doctorPrecedenceField+"','"+password+"')");
+					s2.executeUpdate("Insert into doctor (name, address, contact, email, category, scheduled_days, timings, doctor_position, username) values ('"+nameField+"', '"+addressField+"', '"+contactField+"', '"+emailField+"', '"+categoryField+"', '"+scheduleField+"', '"+timingField+"', '"+doctorPrecedenceField+"', '"+userField+"')");
+					s2.executeUpdate("Insert into logindoctor (username, password) values ('"+userField+"', '"+passField+"')");
+//					s2.executeUpdate("Insert into "+categoryField+"(name, address, contact, email, category, scheduled_days, timings, doctor_position,passwordfield) values ('"+nameField+"', '"+addressField+"', '"+contactField+"', '"+emailField+"', '"+categoryField+"', '"+scheduleField+"', '"+timingField+"', '"+doctorPrecedenceField+"','"+password+"')");
 					name.setText("");
 					address.setText("");
 					passwordField.setText("");
@@ -257,6 +265,11 @@ public class RegisterDoctor extends JFrame {
 				adminPage.setVisible(true);
 			}
 		});
+		
+		lblUsername = new JLabel("Username");
+		contentPane.add(lblUsername, "2, 20, right, default");
+		
+		
 		
 		lblPassword = new JLabel("Password");
 		contentPane.add(lblPassword, "2, 22, right, default");

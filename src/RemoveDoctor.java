@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -11,6 +12,7 @@ import java.awt.ScrollPane;
 import javax.swing.JTable;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.sql.*;
 import java.util.Vector;
 
@@ -44,12 +46,14 @@ public class RemoveDoctor extends JFrame {
 	 * Create the frame.
 	 */
 	public RemoveDoctor() {
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
+		
+
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
 		
 		try
 		{
@@ -57,6 +61,7 @@ public class RemoveDoctor extends JFrame {
 			Connection c = DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
 			Statement st = c.createStatement();
 			ResultSet rs = st.executeQuery("Select * from doctor");
+			contentPane.setLayout(null);
 			
 			ScrollPane scrollPane = new ScrollPane();
 			scrollPane.setBounds(10, 34, 395, 217);
@@ -80,8 +85,8 @@ public class RemoveDoctor extends JFrame {
 		}
 		
 		JLabel lblDoctorDetails = new JLabel("Doctor Details:");
-		lblDoctorDetails.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		lblDoctorDetails.setBounds(10, 11, 109, 14);
+		lblDoctorDetails.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		contentPane.add(lblDoctorDetails);
 	}
 
