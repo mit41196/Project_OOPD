@@ -65,7 +65,7 @@ public class SearchDoctor extends JFrame {
 		});
 		
 		btnCategory.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnCategory.setBounds(94, 51, 238, 23);
+		btnCategory.setBounds(94, 59, 238, 29);
 		getContentPane().add(btnCategory);
 		
 		JButton btnNameOfDoctor = new JButton("Name of Doctor");
@@ -79,7 +79,7 @@ public class SearchDoctor extends JFrame {
 		});
 		
 		btnNameOfDoctor.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnNameOfDoctor.setBounds(94, 85, 238, 23);
+		btnNameOfDoctor.setBounds(94, 108, 238, 29);
 		getContentPane().add(btnNameOfDoctor);
 		
 		JButton btnAddressOfDoctor = new JButton("Address of Doctor");
@@ -93,21 +93,12 @@ public class SearchDoctor extends JFrame {
 		});
 		
 		btnAddressOfDoctor.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnAddressOfDoctor.setBounds(94, 119, 238, 23);
+		btnAddressOfDoctor.setBounds(94, 158, 238, 29);
 		getContentPane().add(btnAddressOfDoctor);
 		
-		JButton btnIdOfDoctor = new JButton("ID of Doctor");
-		btnIdOfDoctor.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				//close();
-				FindByIDPage findbyidpage = new FindByIDPage();
-				findbyidpage.setVisible(true);
-			}
-		});
-		
-		btnIdOfDoctor.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnIdOfDoctor.setBounds(94, 153, 238, 23);
-		getContentPane().add(btnIdOfDoctor);
+		JButton btnBack = new JButton("BACK");
+		btnBack.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnBack.setBounds(167, 213, 89, 23);
+		getContentPane().add(btnBack);
 	}
 }

@@ -6,13 +6,27 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.JList;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 
 public class FindByAddressPage extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-
+	JList list;
+	DefaultListModel model;
+	
+	JComboBox comboBox = new JComboBox();
+	
 	/**
 	 * Launch the application.
 	 */
@@ -32,28 +46,116 @@ public class FindByAddressPage extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	private void fillComboBoxId()
+	{
+		try 
+		{
+			Class.forName("com.mysql.jdbc.Driver");
+		
+			Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
+			Statement st=c.createStatement();
+			ResultSet rs=st.executeQuery("Select * from doctor");
+			while(rs.next())
+			{
+				String name = rs.getString("address");
+				comboBox.addItem(name);
+			}
+			System.out.println("query");
+		}
+		catch(Exception e1)
+		{
+			e1.printStackTrace();
+		}
+	}
+	
+	private void fillJListHod(JList list, String name)
+	{
+		System.out.println(name);
+
+		try 
+		{
+			model.clear();
+			Class.forName("com.mysql.jdbc.Driver");
+			System.out.println("adsdasd");
+			Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
+			Statement st=c.createStatement();
+			ResultSet rs=st.executeQuery("SELECT * FROM doctor WHERE category = '"+name+"'");
+			System.out.println(rs.getFetchSize());
+			while(rs.next())
+			{
+				System.out.println("adsdasd");
+				String hod = rs.getString("name");
+				System.out.println(hod);
+				model.addElement(hod);
+			}
+			list.setModel(model);
+			
+			rs.close();
+			st.close();
+		}
+		catch(Exception e1)
+		{
+			e1.printStackTrace();
+		}
+	}
+
 	public FindByAddressPage() {
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		fillComboBoxId();
+		model = new DefaultListModel();
+		 list = new JList();
+		 list.setVisible(false);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		System.out.println("vcx");
 		
-		JLabel lblSearchDoctorBy = new JLabel("Search Doctor By Address");
-		lblSearchDoctorBy.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblSearchDoctorBy.setBounds(122, 11, 218, 14);
-		contentPane.add(lblSearchDoctorBy);
+		list.setBounds(190, 110, 186, 79);
+		contentPane.add(list);
 		
-		JLabel lblEnterAddress = new JLabel("Enter Address:");
-		lblEnterAddress.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblEnterAddress.setBounds(23, 59, 124, 14);
-		contentPane.add(lblEnterAddress);
+		comboBox.setBounds(190, 79, 185, 20);
+		comboBox.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				list.setVisible(true);
+				String selected_id = comboBox.getSelectedItem().toString();
+				fillJListHod(list, selected_id);
+				
+			}
+		});
+		contentPane.add(comboBox);
 		
-		textField = new JTextField();
-		textField.setBounds(157, 57, 86, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		String id = (String)comboBox.getSelectedItem();
+		System.out.println(id);
+		
+		JLabel label = new JLabel("");
+		label.setBounds(22, 131, 46, 14);
+		contentPane.add(label);
+		
+		JLabel lblNameOfDr = new JLabel("NAME of DR.");
+		lblNameOfDr.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNameOfDr.setBounds(38, 131, 107, 14);
+		contentPane.add(lblNameOfDr);
+		
+		JButton btnView = new JButton("VIEW");
+		btnView.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnView.setBounds(150, 215, 89, 23);
+		contentPane.add(btnView);
+		
+		JLabel lblSelectDrBy = new JLabel("Select DR. By Address");
+		lblSelectDrBy.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblSelectDrBy.setBounds(40, 28, 216, 20);
+		contentPane.add(lblSelectDrBy);
+		
+		JLabel lblAddress = new JLabel("Address");
+		lblAddress.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblAddress.setBounds(38, 82, 107, 23);
+		contentPane.add(lblAddress);
+		
 	}
 
 }
