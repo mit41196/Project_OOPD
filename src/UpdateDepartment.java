@@ -14,18 +14,20 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JList;
 
 public class UpdateDepartment extends JFrame {
 
 	private JPanel contentPane;
-
+	JList list;
+	DefaultListModel model;
 	/**
 	 * Launch the application.
 	 */
 	
-	JComboBox comboBox_id = new JComboBox();
-	JComboBox comboBox_hod = new JComboBox();
+	JComboBox comboBox_dept_name = new JComboBox();
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -51,9 +53,10 @@ public class UpdateDepartment extends JFrame {
 			ResultSet rs=st.executeQuery("Select * from department");
 			while(rs.next())
 			{
-				String id = rs.getString("dept_id");
-				comboBox_id.addItem(id);
+				String name = rs.getString("dept_name");
+				comboBox_dept_name.addItem(name);
 			}
+			System.out.println("query");
 		}
 		catch(Exception e1)
 		{
@@ -61,23 +64,30 @@ public class UpdateDepartment extends JFrame {
 		}
 	}
 	
-	private void fillComboBoxHod()
+	private void fillJListHod(JList list, String name)
 	{
-		String id = (String)comboBox_id.getSelectedItem();
-		System.out.println(id);
+		System.out.println(name);
 		String position = "Senior Specialists";
 		try 
 		{
+			model.clear();
 			Class.forName("com.mysql.jdbc.Driver");
-		
+			System.out.println("adsdasd");
 			Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
 			Statement st=c.createStatement();
-			ResultSet rs=st.executeQuery("Select * from doctor where category = '"+id+"' and doctor_position = '"+position+"'");
+			ResultSet rs=st.executeQuery("SELECT * FROM doctor WHERE category = '"+name+"' AND doctor_position = '"+position+"'");
+			System.out.println(rs.getFetchSize());
 			while(rs.next())
 			{
+				System.out.println("adsdasd");
 				String hod = rs.getString("name");
-				comboBox_hod.addItem(hod);
+				System.out.println(hod);
+				model.addElement(hod);
 			}
+			list.setModel(model);
+			
+			rs.close();
+			st.close();
 		}
 		catch(Exception e1)
 		{
@@ -90,6 +100,9 @@ public class UpdateDepartment extends JFrame {
 	public UpdateDepartment() {
 		
 		fillComboBoxId();
+		model = new DefaultListModel();
+		 list = new JList();
+		 list.setVisible(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -100,43 +113,58 @@ public class UpdateDepartment extends JFrame {
 		JLabel lblDeptId = new JLabel("Dept. Id:");
 		lblDeptId.setBounds(33, 82, 77, 14);
 		contentPane.add(lblDeptId);
+		System.out.println("vcx");
 		
+		list.setBounds(190, 110, 186, 79);
+		contentPane.add(list);
 		
-		comboBox_id.setBounds(190, 79, 185, 20);
-		contentPane.add(comboBox_id);
+		comboBox_dept_name.setBounds(190, 79, 185, 20);
+		comboBox_dept_name.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				list.setVisible(true);
+				String selected_id = comboBox_dept_name.getSelectedItem().toString();
+				fillJListHod(list, selected_id);
+				
+			}
+		});
+		contentPane.add(comboBox_dept_name);
 		
 		JLabel lblNewLabel = new JLabel("Dept. HOD");
 		lblNewLabel.setBounds(33, 136, 69, 14);
 		contentPane.add(lblNewLabel);
 		
-		comboBox_hod.setBounds(190, 133, 185, 20);
-		contentPane.add(comboBox_hod);
-		
 		JLabel lblUpdateDepartment = new JLabel("Update Department");
 		lblUpdateDepartment.setFont(new Font("Times New Roman", Font.BOLD, 15));
 		lblUpdateDepartment.setBounds(33, 22, 139, 14);
 		contentPane.add(lblUpdateDepartment);
-		fillComboBoxHod();
+		
+		String id = (String)comboBox_dept_name.getSelectedItem();
+		System.out.println(id);
+
+		
+//		fillJListHod(list, id);
+		
+		
+		
+		
 		JButton btnUpdate = new JButton("Update");
 		btnUpdate.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				String selectedId = (String)comboBox_id.getSelectedItem();
-				String selectedHod = (String)comboBox_hod.getSelectedItem();
+				String selectedName = (String)comboBox_dept_name.getSelectedItem();
+				String selectedHod = list.getSelectedValue().toString();
 				try 
 				{
 					Class.forName("com.mysql.jdbc.Driver");
 				
 					Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
 					Statement st=c.createStatement();
-					ResultSet rs=st.executeQuery("Update department SET dept_hod='"+selectedHod+"' where dept_id='"+selectedId+"'");
-					while(rs.next())
-					{
-						String id = rs.getString("dept_id");
-						comboBox_id.addItem(id);
-					}
+					st.executeUpdate("Update department SET dept_hod='"+selectedHod+"' where dept_name='"+selectedName+"'");
 				}
 				catch(Exception e1)
 				{
@@ -147,5 +175,6 @@ public class UpdateDepartment extends JFrame {
 		});
 		btnUpdate.setBounds(154, 206, 89, 23);
 		contentPane.add(btnUpdate);
+		
 	}
 }

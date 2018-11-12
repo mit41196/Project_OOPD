@@ -18,6 +18,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -73,6 +74,30 @@ public class RegisterDoctor extends JFrame {
 		WindowEvent closeEvent = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
 		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(closeEvent);
 	}
+	
+	
+	private void fillComboBoxId()
+	{
+		try 
+		{
+			Class.forName("com.mysql.jdbc.Driver");
+		
+			Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
+			Statement st=c.createStatement();
+			ResultSet rs=st.executeQuery("Select * from department");
+			while(rs.next())
+			{
+				String name = rs.getString("dept_name");
+				comboBox_category.addItem(name);
+			}
+			System.out.println("query");
+		}
+		catch(Exception e1)
+		{
+			e1.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Create the frame.
 	 */
@@ -156,11 +181,7 @@ public class RegisterDoctor extends JFrame {
 		contentPane.add(lblCategorydepartment, "2, 12, right, default");
 		
 		comboBox_category = new JComboBox();
-		comboBox_category.addItem("Dept1");
-		comboBox_category.addItem("Dept2");
-		comboBox_category.addItem("Dept3");
-		comboBox_category.addItem("Dept4");
-		comboBox_category.addItem("Dept5");
+		fillComboBoxId();
 		
 		contentPane.add(comboBox_category, "4, 12, fill, default");
 		

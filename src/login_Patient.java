@@ -96,7 +96,7 @@ public class login_Patient extends JFrame {
 				
 					Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
 					Statement st=c.createStatement();
-					ResultSet rs=st.executeQuery("Select * from loginPatient where uniqueId = '"+username+"'");
+					ResultSet rs=st.executeQuery("Select * from loginpatient where uniqueId = '"+username+"'");
 					while(rs.next())
 					{
 						userId = rs.getString("uniqueId");
