@@ -67,7 +67,6 @@ public class login_Admin extends JFrame {
 		contentPane.add(lblUsername);
 		
 		username = new JTextField();
-		
 		username.setBounds(110, 103, 253, 20);
 		contentPane.add(username);
 		username.setColumns(10);
