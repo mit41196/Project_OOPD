@@ -24,8 +24,7 @@ public class FindByAddressPage extends JFrame {
 	private JPanel contentPane;
 	JList list;
 	DefaultListModel model;
-	
-	JComboBox comboBox = new JComboBox();
+	private JTextField textField;
 	
 	/**
 	 * Launch the application.
@@ -46,27 +45,27 @@ public class FindByAddressPage extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	private void fillComboBoxId()
-	{
-		try 
-		{
-			Class.forName("com.mysql.jdbc.Driver");
-		
-			Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
-			Statement st=c.createStatement();
-			ResultSet rs=st.executeQuery("Select * from doctor");
-			while(rs.next())
-			{
-				String name = rs.getString("address");
-				comboBox.addItem(name);
-			}
-			System.out.println("query");
-		}
-		catch(Exception e1)
-		{
-			e1.printStackTrace();
-		}
-	}
+//	private void fillComboBoxId()
+//	{
+//		try 
+//		{
+//			Class.forName("com.mysql.jdbc.Driver");
+//		
+//			Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
+//			Statement st=c.createStatement();
+//			ResultSet rs=st.executeQuery("Select * from doctor");
+//			while(rs.next())
+//			{
+//				String name = rs.getString("address");
+//				comboBox.addItem(name);
+//			}
+//			System.out.println("query");
+//		}
+//		catch(Exception e1)
+//		{
+//			e1.printStackTrace();
+//		}
+//	}
 	
 	private void fillJListHod(JList list, String name)
 	{
@@ -100,7 +99,7 @@ public class FindByAddressPage extends JFrame {
 	}
 
 	public FindByAddressPage() {
-		fillComboBoxId();
+		//fillComboBoxId();
 		model = new DefaultListModel();
 		 list = new JList();
 		 list.setVisible(false);
@@ -114,23 +113,7 @@ public class FindByAddressPage extends JFrame {
 		
 		list.setBounds(190, 110, 186, 79);
 		contentPane.add(list);
-		
-		comboBox.setBounds(190, 79, 185, 20);
-		comboBox.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				list.setVisible(true);
-				String selected_id = comboBox.getSelectedItem().toString();
-				fillJListHod(list, selected_id);
-				
-			}
-		});
-		contentPane.add(comboBox);
-		
-		String id = (String)comboBox.getSelectedItem();
-		System.out.println(id);
+		//System.out.println(id);
 		
 		JLabel label = new JLabel("");
 		label.setBounds(22, 131, 46, 14);
@@ -155,6 +138,11 @@ public class FindByAddressPage extends JFrame {
 		lblAddress.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblAddress.setBounds(38, 82, 107, 23);
 		contentPane.add(lblAddress);
+		
+		textField = new JTextField();
+		textField.setBounds(190, 76, 133, 23);
+		contentPane.add(textField);
+		textField.setColumns(10);
 		
 	}
 
