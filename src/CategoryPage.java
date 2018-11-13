@@ -41,11 +41,11 @@ public class CategoryPage extends JFrame {
 		});
 	}
 
-	private void getSelectedItemfromJlist() 
-	{
-		
-		
-	}
+//	private void getSelectedItemfromJlist() 
+//	{
+//		
+//		
+//	}
 	private void fillComboBoxId()
 	{
 		try 
