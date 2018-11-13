@@ -41,7 +41,11 @@ public class CategoryPage extends JFrame {
 		});
 	}
 
-	
+	private void getSelectedItemfromJlist() 
+	{
+		
+		
+	}
 	private void fillComboBoxId()
 	{
 		try 
@@ -55,8 +59,11 @@ public class CategoryPage extends JFrame {
 			{
 				String name = rs.getString("dept_name");
 				comboBox_dept_name.addItem(name);
+				//System.out.println(name);
 			}
+			
 			System.out.println("query");
+			
 		}
 		catch(Exception e1)
 		{
@@ -72,14 +79,13 @@ public class CategoryPage extends JFrame {
 		{
 			model.clear();
 			Class.forName("com.mysql.jdbc.Driver");
-			System.out.println("adsdasd");
+			//System.out.println("adsdasd");
 			Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
 			Statement st=c.createStatement();
 			ResultSet rs=st.executeQuery("SELECT * FROM doctor WHERE category = '"+name+"'");
 			System.out.println(rs.getFetchSize());
 			while(rs.next())
 			{
-				System.out.println("adsdasd");
 				String hod = rs.getString("name");
 				System.out.println(hod);
 				model.addElement(hod);
@@ -110,7 +116,6 @@ public class CategoryPage extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		System.out.println("vcx");
 		
 		list.setBounds(190, 110, 186, 79);
 		contentPane.add(list);
@@ -147,6 +152,22 @@ public class CategoryPage extends JFrame {
 		contentPane.add(lblNameOfDr);
 		
 		JButton btnView = new JButton("VIEW");
+
+		btnView.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+					int index = list.getSelectedIndex();
+		            System.out.println("Index Selected: " + index);
+		            String s = (String) list.getSelectedValue();
+		            System.out.println("Value Selected: " + s);
+//		            SelectedDoctorProfileDetails details =  new SelectedDoctorProfileDetails(s);
+		            SelectedDoctorProfileDetails details = new SelectedDoctorProfileDetails(s);
+		            details.setVisible(true);
+			}
+		});
+		
 		btnView.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnView.setBounds(150, 215, 89, 23);
 		contentPane.add(btnView);
@@ -157,5 +178,4 @@ public class CategoryPage extends JFrame {
 		contentPane.add(lblCategory);
 
 	}
-
 }
