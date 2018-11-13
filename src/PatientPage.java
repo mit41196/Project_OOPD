@@ -63,33 +63,15 @@ public class PatientPage extends JFrame {
 			}
 		});
 		
-		btnSearchDoctor.setBounds(61, 79, 297, 23);
+		btnSearchDoctor.setBounds(61, 79, 297, 33);
 		contentPane.add(btnSearchDoctor);
 		
 		JButton viewYourProfile = new JButton("View Profile");
-		viewYourProfile.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				ViewPatientProfile vpp = new ViewPatientProfile(user_name);
-				vpp.setVisible(true);
-				
-			}
-		});
 		
 		
 		
-		viewYourProfile.setBounds(61, 113, 297, 23);
+		viewYourProfile.setBounds(61, 123, 297, 30);
 		contentPane.add(viewYourProfile);
-		
-		JButton btnViewDoctorsProfile = new JButton("View Doctors Profile");
-		btnViewDoctorsProfile.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnViewDoctorsProfile.setBounds(61, 147, 297, 23);
-		contentPane.add(btnViewDoctorsProfile);
 		
 		JButton btnLogout = new JButton("Logout");
 		btnLogout.addActionListener(new ActionListener() {
@@ -103,7 +85,7 @@ public class PatientPage extends JFrame {
 				
 			}
 		});
-		btnLogout.setBounds(61, 181, 297, 23);
+		btnLogout.setBounds(61, 164, 297, 30);
 		contentPane.add(btnLogout);
 	}
 
