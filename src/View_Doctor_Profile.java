@@ -53,7 +53,9 @@ public class View_Doctor_Profile extends JFrame {
 		String category = "";
 		String doctor_position = "";
 		String username = "";
-		String scheduled_days = "";
+		String doctor_type = "";
+		String timings = "";
+		//String scheduled_days = "";
 		
 		try
 		{
@@ -69,8 +71,10 @@ public class View_Doctor_Profile extends JFrame {
 				email = rs.getString("email");
 				category = rs.getString("category");
 				doctor_position = rs.getString("doctor_position");
-				scheduled_days = rs.getString("scheduled_days");
+				//scheduled_days = rs.getString("scheduled_days");
 				username = rs.getString("username");
+				timings = rs.getString("timings");
+				doctor_type = rs.getString("doctor_type");
 			}
 		}
 		catch(Exception e1)
@@ -109,10 +113,6 @@ public class View_Doctor_Profile extends JFrame {
 		lblCategory.setBounds(56, 143, 129, 15);
 		contentPane.add(lblCategory);
 		
-		JLabel lblScheduleDays = new JLabel("SCHEDULE DAYS:");
-		lblScheduleDays.setBounds(56, 170, 141, 15);
-		contentPane.add(lblScheduleDays);
-		
 		JLabel lblTimings = new JLabel("TIMINGS:");
 		lblTimings.setBounds(56, 197, 70, 15);
 		contentPane.add(lblTimings);
@@ -120,6 +120,10 @@ public class View_Doctor_Profile extends JFrame {
 		JLabel lblDoctorPrecedence = new JLabel("DOCTOR PRECEDENCE:");
 		lblDoctorPrecedence.setBounds(56, 224, 129, 15);
 		contentPane.add(lblDoctorPrecedence);
+		
+		JLabel lblDoctorType = new JLabel("DOCTOR TYPE:");
+		lblDoctorType.setBounds(56, 250, 129, 15);
+		contentPane.add(lblDoctorType);
 		
 		JButton btnBack = new JButton("BACK");
 		btnBack.addActionListener(new ActionListener() {
@@ -169,15 +173,28 @@ public class View_Doctor_Profile extends JFrame {
 		lblNewLabel_8.setBounds(210, 143, 169, 14);
 		contentPane.add(lblNewLabel_8);
 		
-		JLabel lblNewLabel_9 = new JLabel(scheduled_days);
-		lblNewLabel_9.setFont(new Font("Times New Roman", Font.BOLD, 12));
-		lblNewLabel_9.setBounds(207, 170, 172, 14);
-		contentPane.add(lblNewLabel_9);
-		
+//		JLabel lblNewLabel_9 = new JLabel(scheduled_days);
+//		lblNewLabel_9.setFont(new Font("Times New Roman", Font.BOLD, 12));
+//		lblNewLabel_9.setBounds(207, 170, 172, 14);
+//		contentPane.add(lblNewLabel_9);
+//		
 		JLabel lblNewLabel_10 = new JLabel(doctor_position);
 		lblNewLabel_10.setFont(new Font("Times New Roman", Font.BOLD, 12));
-		lblNewLabel_10.setBounds(220, 224, 169, 14);
+		lblNewLabel_10.setBounds(230, 224, 169, 14);
 		contentPane.add(lblNewLabel_10);
+		
+		JLabel lblNewLabel_11 = new JLabel(timings);
+		lblNewLabel_11.setFont(new Font("Times New Roman", Font.BOLD, 12));
+		lblNewLabel_11.setBounds(240, 210, 169, 14);
+		contentPane.add(lblNewLabel_11);
+		
+		JLabel lblNewLabel_12 = new JLabel(doctor_type);
+		lblNewLabel_12.setFont(new Font("Times New Roman", Font.BOLD, 12));
+		lblNewLabel_12.setBounds(250, 260, 169, 14);
+		contentPane.add(lblNewLabel_12);
+		
+//		JLabel lblDoctorType = new JLabel("DOCTOR TYPE:");
+//		lblDoctorType.setBounds(56, 250, 117, 14);
+//		contentPane.add(lblDoctorType);
 	}
-
 }
