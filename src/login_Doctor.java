@@ -111,8 +111,10 @@ public class login_Doctor extends JFrame {
 				if(user_name.equals(userId) && pass.equals(password))
 				{
 					close();
-					Doctor_Home dh = new Doctor_Home(user_name);
-					dh.setVisible(true);
+//					Doctor_Home dh = new Doctor_Home(user_name);
+//					dh.setVisible(true);
+					List_Of_Patients lop = new List_Of_Patients(user_name);
+					lop.setVisible(true);
 				}
 				else
 				{

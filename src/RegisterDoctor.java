@@ -18,7 +18,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -37,8 +36,6 @@ public class RegisterDoctor extends JFrame {
 	private JLabel lblEmail;
 	private JTextField email;
 	private JLabel lblCategorydepartment;
-	private JLabel lblSchedule;
-	private JTextField scheduledDays;
 	private JLabel lblTimings;
 	private JTextField timings;
 	private JLabel lblDoctorPrecedence;
@@ -55,6 +52,8 @@ public class RegisterDoctor extends JFrame {
 	/**
 	 * Launch the application.
 	 */
+	int range;
+	int countvalue;
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -74,30 +73,6 @@ public class RegisterDoctor extends JFrame {
 		WindowEvent closeEvent = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
 		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(closeEvent);
 	}
-	
-	
-	private void fillComboBoxId()
-	{
-		try 
-		{
-			Class.forName("com.mysql.jdbc.Driver");
-		
-			Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
-			Statement st=c.createStatement();
-			ResultSet rs=st.executeQuery("Select * from department");
-			while(rs.next())
-			{
-				String name = rs.getString("dept_name");
-				comboBox_category.addItem(name);
-			}
-			System.out.println("query");
-		}
-		catch(Exception e1)
-		{
-			e1.printStackTrace();
-		}
-	}
-	
 	/**
 	 * Create the frame.
 	 */
@@ -181,16 +156,13 @@ public class RegisterDoctor extends JFrame {
 		contentPane.add(lblCategorydepartment, "2, 12, right, default");
 		
 		comboBox_category = new JComboBox();
-		fillComboBoxId();
+		comboBox_category.addItem("Dept1");
+		comboBox_category.addItem("Dept2");
+		comboBox_category.addItem("Dept3");
+		comboBox_category.addItem("Dept4");
+		comboBox_category.addItem("Dept5");
 		
 		contentPane.add(comboBox_category, "4, 12, fill, default");
-		
-		lblSchedule = new JLabel("Schedule Days:");
-		contentPane.add(lblSchedule, "2, 14, right, default");
-		
-		scheduledDays = new JTextField();
-		contentPane.add(scheduledDays, "4, 14, fill, default");
-		scheduledDays.setColumns(10);
 		
 		lblTimings = new JLabel("Timings:");
 		contentPane.add(lblTimings, "2, 16, right, default");
@@ -241,8 +213,15 @@ public class RegisterDoctor extends JFrame {
 				String contactField = contact.getText();
 				String emailField = email.getText();
 				String categoryField = (String)comboBox_category.getSelectedItem();
-				String scheduleField = scheduledDays.getText();
+				//String scheduleField = scheduledDays.getText();
 				String timingField = timings.getText();
+				String a[]=timingField.split("-");
+				range=Integer.parseInt(a[1])-Integer.parseInt(a[0]);
+				if(range>0)
+				{
+				countvalue=range*4;
+				}
+				
 				String doctorPrecedenceField = (String)comboBox_doc_precedence.getSelectedItem();
 				String userField = usernameField.getText();
 				String passField = passwordField.getText();
@@ -251,7 +230,7 @@ public class RegisterDoctor extends JFrame {
 					Class.forName("com.mysql.jdbc.Driver");
 					Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
 					Statement s2=c.createStatement();
-					s2.executeUpdate("Insert into doctor (name, address, contact, email, category, scheduled_days, timings, doctor_position, username) values ('"+nameField+"', '"+addressField+"', '"+contactField+"', '"+emailField+"', '"+categoryField+"', '"+scheduleField+"', '"+timingField+"', '"+doctorPrecedenceField+"', '"+userField+"')");
+					s2.executeUpdate("Insert into doctor (name, address, contact, email, category, timings, doctor_position, username,patients_count) values ('"+nameField+"', '"+addressField+"', '"+contactField+"', '"+emailField+"', '"+categoryField+"', '"+timingField+"', '"+doctorPrecedenceField+"', '"+userField+"','"+countvalue+"')");
 					s2.executeUpdate("Insert into logindoctor (username, password) values ('"+userField+"', '"+passField+"')");
 //					s2.executeUpdate("Insert into "+categoryField+"(name, address, contact, email, category, scheduled_days, timings, doctor_position,passwordfield) values ('"+nameField+"', '"+addressField+"', '"+contactField+"', '"+emailField+"', '"+categoryField+"', '"+scheduleField+"', '"+timingField+"', '"+doctorPrecedenceField+"','"+password+"')");
 					name.setText("");
@@ -259,7 +238,7 @@ public class RegisterDoctor extends JFrame {
 					passwordField.setText("");
 					contact.setText("");
 					email.setText("");
-					scheduledDays.setText("");
+					//scheduledDays.setText("");
 					timings.setText("");
 					comboBox_category.setSelectedItem(0);
 					comboBox_doc_precedence.setSelectedItem(0);

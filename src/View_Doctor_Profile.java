@@ -125,11 +125,10 @@ public class View_Doctor_Profile extends JFrame {
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				close();
-				Doctor_Home dh=new Doctor_Home(user_name);
-				dh.setVisible(true);
+				List_Of_Patients lop = new List_Of_Patients(user_name);
 			}
 		});
-		btnBack.setBounds(12, 292, 117, 25);
+		btnBack.setBounds(56, 292, 117, 25);
 		contentPane.add(btnBack);
 		
 		JButton btnUpdate = new JButton("EDIT");
@@ -142,7 +141,7 @@ public class View_Doctor_Profile extends JFrame {
 		});
 		
 		
-		btnUpdate.setBounds(293, 292, 117, 25);
+		btnUpdate.setBounds(297, 292, 117, 25);
 		contentPane.add(btnUpdate);
 		
 		JLabel lblNewLabel_4 = new JLabel(name);
