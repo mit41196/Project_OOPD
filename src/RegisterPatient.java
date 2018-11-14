@@ -223,7 +223,7 @@ public class RegisterPatient extends JFrame {
 					Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
 					Statement s2=c.createStatement();
 					s2.executeUpdate("Insert into patient(name, address, contact, email, bloodgroup, gender, location, department, uniqueId) values ('"+nameField+"', '"+addressField+"', '"+contactField+"', '"+emailField+"', '"+bloodgroupField+"', '"+genderField+"', '"+locationField+"', '"+departmentField+"', '"+unique_Id+"')");
-					s2.executeUpdate("Insert into loginPatient(uniqueId, password) values ('"+unique_Id+"', '"+password+"')");
+					s2.executeUpdate("Insert into loginpatient(uniqueId, password) values ('"+unique_Id+"', '"+password+"')");
 					name.setText("");
 					address.setText("");
 					contact.setText("");

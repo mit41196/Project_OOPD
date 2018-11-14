@@ -82,19 +82,19 @@ public class ViewDoctorProfile extends JFrame {
 		btnAddressOfDoctor.setBounds(99, 126, 175, 23);
 		getContentPane().add(btnAddressOfDoctor);
 		
-		JButton btnIdOfDoctor = new JButton("ID of Doctor");
-		btnIdOfDoctor.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				//close();
-				FindByIDPage findbyidpage = new FindByIDPage();
-				findbyidpage.setVisible(true);
-			}
-		});
-		
-		btnIdOfDoctor.setBounds(99, 163, 175, 23);
-		getContentPane().add(btnIdOfDoctor);
-		
+//		JButton btnIdOfDoctor = new JButton("ID of Doctor");
+//		btnIdOfDoctor.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//				
+//				//close();
+//				//FindByIDPage findbyidpage = new FindByIDPage();
+//				findbyidpage.setVisible(true);
+//			}
+//		});
+//		
+//		btnIdOfDoctor.setBounds(99, 163, 175, 23);
+//		getContentPane().add(btnIdOfDoctor);
+//		
 	}
 
 }

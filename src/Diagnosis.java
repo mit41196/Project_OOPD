@@ -4,11 +4,13 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -24,6 +26,11 @@ import javax.swing.SwingConstants;
 public class Diagnosis extends JFrame {
 
 	private JPanel contentPane;
+	ButtonGroup G = new ButtonGroup();
+	JRadioButton jRadioButton1 = new JRadioButton();
+	JRadioButton jRadioButton2 = new JRadioButton();
+	JLabel L1;
+	
 
 	/**
 	 * Launch the application.
@@ -51,10 +58,8 @@ public class Diagnosis extends JFrame {
 	public Diagnosis(String patient_name, String patient_id, String user_name) {
 		
 
-		
-		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 390);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -82,6 +87,12 @@ public class Diagnosis extends JFrame {
 		medicine_textArea.setBounds(198, 164, 211, 49);
 		contentPane.add(medicine_textArea);
 		
+		jRadioButton1.setText("Critical");
+		jRadioButton1.setText("Non-Critical"); 
+		jRadioButton1.setBounds(120, 30, 120, 50); 
+		jRadioButton2.setBounds(250, 30, 80, 50); 
+		G.add(jRadioButton1); 
+	    G.add(jRadioButton2);
 		
 		
 		JButton btnSave = new JButton("SAVE");
@@ -106,7 +117,7 @@ public class Diagnosis extends JFrame {
 			}
 		
 		});
-		btnSave.setBounds(270, 224, 117, 25);
+		btnSave.setBounds(271, 300, 117, 25);
 		contentPane.add(btnSave);
 		
 		JButton btnBack = new JButton("BACK");
@@ -119,7 +130,7 @@ public class Diagnosis extends JFrame {
 				vpdd.setVisible(true);
 			}
 		});
-		btnBack.setBounds(25, 224, 117, 25);
+		btnBack.setBounds(23, 300, 117, 25);
 		contentPane.add(btnBack);
 		
 		JLabel lblNewLabel = new JLabel(patient_name);
@@ -129,6 +140,22 @@ public class Diagnosis extends JFrame {
 		JLabel lblPrescription = new JLabel("Prescription");
 		lblPrescription.setBounds(35, 164, 76, 14);
 		contentPane.add(lblPrescription);
+		
+		JRadioButton rdbtnCritical = new JRadioButton("Critical");
+		G.add(rdbtnCritical);
+		rdbtnCritical.setBounds(198, 229, 109, 23);
+		contentPane.add(rdbtnCritical);
+		
+		JRadioButton rdbtnNonCritical = new JRadioButton("Non Critical");
+		G.add(rdbtnNonCritical);
+		rdbtnNonCritical.setBounds(198, 253, 109, 23);
+		contentPane.add(rdbtnNonCritical);
+		
+		JLabel lblStateOfPatient = new JLabel("State of Patient");
+		lblStateOfPatient.setBounds(35, 238, 131, 38);
+		contentPane.add(lblStateOfPatient);
+		
+		L1 = new JLabel("Qualification"); 
 		
 	}
 }

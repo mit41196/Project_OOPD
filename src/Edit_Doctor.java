@@ -85,7 +85,7 @@ public class Edit_Doctor extends JFrame {
 		String category = "";
 		String doctor_position = "";
 		String username = "";
-		String scheduled_days = "";
+		//String scheduled_days = "";
 		
 		try
 		{
@@ -101,7 +101,7 @@ public class Edit_Doctor extends JFrame {
 				email = rs.getString("email");
 				category = rs.getString("category");
 				doctor_position = rs.getString("doctor_position");
-				scheduled_days = rs.getString("scheduled_days");
+				//scheduled_days = rs.getString("scheduled_days");
 				username = rs.getString("username");
 			}
 		}
@@ -142,10 +142,10 @@ public class Edit_Doctor extends JFrame {
 		lblCategorydept.setBounds(89, 144, 146, 15);
 		contentPane.add(lblCategorydept);
 		
-		JLabel lblScheduleDays = new JLabel("SCHEDULE DAYS:");
-		lblScheduleDays.setBounds(89, 171, 132, 15);
-		contentPane.add(lblScheduleDays);
-		
+//		JLabel lblScheduleDays = new JLabel("SCHEDULE DAYS:");
+//		lblScheduleDays.setBounds(89, 171, 132, 15);
+//		contentPane.add(lblScheduleDays);
+//		
 		JLabel lblTimings = new JLabel("TIMINGS:");
 		lblTimings.setBounds(89, 198, 132, 15);
 		contentPane.add(lblTimings);
@@ -175,7 +175,7 @@ public class Edit_Doctor extends JFrame {
 				String updated_address = addressField.getText();
 				String updated_contact = contactField.getText();
 				String updated_email = emailField.getText();
-				String updated_days = daysField.getText();
+				
 				String updated_category = (String)dept.getSelectedItem();
 				String updated_position = (String)doctor_precedence.getSelectedItem();
 				
@@ -185,7 +185,7 @@ public class Edit_Doctor extends JFrame {
 				
 					Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
 					Statement st=c.createStatement();
-					st.executeUpdate("Update doctor SET name='"+updated_name+"', address='"+updated_address+"', contact='"+updated_contact+"',email='"+updated_email+"',category='"+updated_category+"', scheduled_days='"+updated_days+"', doctor_position='"+updated_position+"' where username='"+user_name+"'");
+					st.executeUpdate("Update doctor SET name='"+updated_name+"', address='"+updated_address+"', contact='"+updated_contact+"',email='"+updated_email+"',category='"+updated_category+"', doctor_position='"+updated_position+"' where username='"+user_name+"'");
 					JOptionPane.showMessageDialog(contentPane, "Updated Successfully...!","Success", JOptionPane.INFORMATION_MESSAGE);
 				}
 				catch(Exception e1)
@@ -218,11 +218,11 @@ public class Edit_Doctor extends JFrame {
 		contentPane.add(emailField);
 		emailField.setColumns(10);
 		
-		daysField = new JTextField(scheduled_days);
-		daysField.setBounds(266, 169, 114, 19);
-		contentPane.add(daysField);
-		daysField.setColumns(10);
-		
+//		daysField = new JTextField(scheduled_days);
+//		daysField.setBounds(266, 169, 114, 19);
+//		contentPane.add(daysField);
+//		daysField.setColumns(10);
+//		
 		textField_5 = new JTextField();
 		textField_5.setBounds(266, 196, 114, 19);
 		contentPane.add(textField_5);

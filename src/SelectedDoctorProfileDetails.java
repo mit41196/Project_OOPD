@@ -233,5 +233,4 @@ public class SelectedDoctorProfileDetails extends JFrame {
 		btnBookAppointment.setBounds(105, 293, 228, 28);
 		contentPane.add(btnBookAppointment);
 	}
-
 }

@@ -82,8 +82,6 @@ public class ViewPatientProfile extends JFrame {
 			e1.printStackTrace();
 		}
 		
-		
-		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 468);
 		contentPane = new JPanel();
