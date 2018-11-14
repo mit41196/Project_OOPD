@@ -234,4 +234,8 @@ public class SelectedDoctorProfileDetails extends JFrame {
 		contentPane.add(btnBookAppointment);
 	}
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> master

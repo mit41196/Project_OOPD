@@ -54,7 +54,7 @@ public class AdminPage extends JFrame {
 		setContentPane(contentPane);
 		
 		JButton btnNewButton = new JButton("Add Doctor");
-		btnNewButton.setBounds(54, 51, 301, 23);
+		btnNewButton.setBounds(54, 63, 301, 23);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				close();
@@ -71,12 +71,21 @@ public class AdminPage extends JFrame {
 		contentPane.add(lblWelcomeadmin);
 		contentPane.add(btnNewButton);
 		
-		JButton btnNewButton_1 = new JButton("Reassignment of Doctor");
-		btnNewButton_1.setBounds(54, 187, 301, 23);
-		contentPane.add(btnNewButton_1);
+		JButton btnReassignment = new JButton("Reassignment of Doctor");
+		btnReassignment.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+				
+			}
+		});
+		btnReassignment.setBounds(54, 170, 301, 23);
+		contentPane.add(btnReassignment);
 		
 		JButton btnLogout = new JButton("Logout");
-		btnLogout.setBounds(54, 259, 301, 23);
+		btnLogout.setBounds(54, 238, 301, 23);
 		
 		btnLogout.addActionListener(new ActionListener() {
 			
@@ -110,11 +119,11 @@ public class AdminPage extends JFrame {
 				
 			}
 		});
-		btnViewDetails.setBounds(54, 119, 301, 23);
+		btnViewDetails.setBounds(54, 97, 301, 23);
 		contentPane.add(btnViewDetails);
 		
 		JButton btnAddDepartment = new JButton("Add Department");
-		btnAddDepartment.setBounds(54, 153, 301, 23);
+		btnAddDepartment.setBounds(54, 131, 301, 23);
 		btnAddDepartment.addActionListener(new ActionListener() {
 			
 			@Override
@@ -128,19 +137,8 @@ public class AdminPage extends JFrame {
 		});
 		contentPane.add(btnAddDepartment);
 		
-		JButton btnRemoveDoctor = new JButton("Remove Doctor");
-		btnRemoveDoctor.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				RemoveDoctor rd = new RemoveDoctor();
-				rd.setVisible(true);
-			}
-		});
-		btnRemoveDoctor.setBounds(54, 85, 301, 23);
-		contentPane.add(btnRemoveDoctor);
-		
 		JButton btnUpdateDepartment = new JButton("Update Department");
-		btnUpdateDepartment.setBounds(54, 225, 301, 23);
+		btnUpdateDepartment.setBounds(54, 204, 301, 23);
 		contentPane.add(btnUpdateDepartment);
 		
 			}
