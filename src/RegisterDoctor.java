@@ -219,7 +219,7 @@ public class RegisterDoctor extends JFrame {
 				range=Integer.parseInt(a[1])-Integer.parseInt(a[0]);
 				if(range>0)
 				{
-				countvalue=range*4;
+					countvalue=range*4;
 				}
 				
 				String doctorPrecedenceField = (String)comboBox_doc_precedence.getSelectedItem();

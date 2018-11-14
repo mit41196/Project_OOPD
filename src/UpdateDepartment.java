@@ -31,11 +31,14 @@ public class UpdateDepartment extends JFrame {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				try {
+				try 
+				{
 					UpdateDepartment frame = new UpdateDepartment();
 					frame.setVisible(true);
 					
-				} catch (Exception e) {
+				}
+				catch (Exception e) 
+				{
 					e.printStackTrace();
 				}
 			}

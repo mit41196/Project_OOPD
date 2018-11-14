@@ -66,26 +66,13 @@ public class AdminPage extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblWelcomeadmin = new JLabel("Welcome ADMIN!!");
-		lblWelcomeadmin.setBounds(138, 23, 151, 17);
+		lblWelcomeadmin.setBounds(145, 23, 144, 17);
 		lblWelcomeadmin.setFont(new Font("Tahoma", Font.BOLD, 14));
 		contentPane.add(lblWelcomeadmin);
 		contentPane.add(btnNewButton);
 		
-		JButton btnReassignment = new JButton("Reassignment of Doctor");
-		btnReassignment.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
-				
-			}
-		});
-		btnReassignment.setBounds(54, 170, 301, 23);
-		contentPane.add(btnReassignment);
-		
 		JButton btnLogout = new JButton("Logout");
-		btnLogout.setBounds(54, 238, 301, 23);
+		btnLogout.setBounds(54, 199, 301, 23);
 		
 		btnLogout.addActionListener(new ActionListener() {
 			
@@ -109,6 +96,7 @@ public class AdminPage extends JFrame {
 				close();
 				ViewDetails_Admin viewDetail;
 				try {
+					close();
 					viewDetail = new ViewDetails_Admin();
 					viewDetail.setVisible(true);
 				} catch (SQLException e1) {
@@ -138,7 +126,17 @@ public class AdminPage extends JFrame {
 		contentPane.add(btnAddDepartment);
 		
 		JButton btnUpdateDepartment = new JButton("Update Department");
-		btnUpdateDepartment.setBounds(54, 204, 301, 23);
+		btnUpdateDepartment.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				close();
+				UpdateDepartment ud = new UpdateDepartment();
+				ud.setVisible(true);
+			}
+		});
+		btnUpdateDepartment.setBounds(54, 165, 301, 23);
 		contentPane.add(btnUpdateDepartment);
 		
 			}

@@ -226,10 +226,13 @@ public class ReAssignment_Doctor extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				ViewPatientProfile_Admin vppa;
-				try {
+				try 
+				{
 					vppa = new ViewPatientProfile_Admin(patient_id);
 					vppa.setVisible(true);
-				} catch (SQLException e1) {
+				} 
+				catch (SQLException e1) 
+				{
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}

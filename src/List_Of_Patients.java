@@ -88,6 +88,10 @@ public class List_Of_Patients extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	
+	public boolean isCellEditable(int row, int column) {
+        return false;
+    }
 	public List_Of_Patients(String user_name) {
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -101,6 +105,8 @@ public class List_Of_Patients extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				// TODO Auto-generated method stub
+//				if (table_1.isEditing())
+//				    table_1.getCellEditor().stopCellEditing();
 				int row=table_1.rowAtPoint(e.getPoint());
 
 				int col= table_1.columnAtPoint(e.getPoint());
@@ -108,7 +114,7 @@ public class List_Of_Patients extends JFrame {
 //				JOptionPane.showMessageDialog(null,"Value in the cell clicked : " +table_1.getValueAt(row,0).toString());
 
 				System.out.println("Value in the cell clicked :"+ " "  +table_1.getValueAt(row,0).toString());
-				
+
 				View_Patient_Details_Doctor vpdd = new View_Patient_Details_Doctor(selected_id, user_name);
 				vpdd.setVisible(true);
 				
@@ -144,14 +150,14 @@ public class List_Of_Patients extends JFrame {
 		
 		 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 307);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JLabel lblListOfPatients = new JLabel("LIST OF PATIENTS");
-		lblListOfPatients.setBounds(160, 12, 168, 15);
+		lblListOfPatients.setBounds(160, 12, 142, 15);
 		contentPane.add(lblListOfPatients);
 		
 		JButton btnSort = new JButton("Sort By Name");

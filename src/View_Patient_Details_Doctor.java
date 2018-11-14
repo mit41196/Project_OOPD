@@ -172,6 +172,20 @@ public class View_Patient_Details_Doctor extends JFrame {
 		btnReferDoctor.setBounds(128, 227, 111, 23);
 		contentPane.add(btnReferDoctor);
 		
+		JButton btnViewHistory = new JButton("View Patient History");
+		btnViewHistory.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				ViewPatientHistory vph = new ViewPatientHistory(patient_id, user_name);
+				vph.setVisible(true);
+				
+			}
+		});
+		btnViewHistory.setBounds(128, 188, 149, 23);
+		contentPane.add(btnViewHistory);
+		
 		
 	}
 }

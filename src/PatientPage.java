@@ -1,5 +1,3 @@
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -10,6 +8,7 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
 public class PatientPage extends JFrame {
@@ -67,7 +66,15 @@ public class PatientPage extends JFrame {
 		contentPane.add(btnSearchDoctor);
 		
 		JButton viewYourProfile = new JButton("View Profile");
-		
+		viewYourProfile.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				ViewPatientProfile vpp = new ViewPatientProfile(user_name);
+				vpp.setVisible(true);
+			}
+		});
 		
 		
 		viewYourProfile.setBounds(61, 123, 297, 30);
@@ -87,6 +94,30 @@ public class PatientPage extends JFrame {
 		});
 		btnLogout.setBounds(61, 164, 297, 30);
 		contentPane.add(btnLogout);
+		
+		JButton btnAutoAssignDoctor = new JButton("Auto Assign Doctor");
+		btnAutoAssignDoctor.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				AutoAssignDoctor aad;
+				try {
+					aad = new AutoAssignDoctor(user_name);
+					aad.setVisible(true);
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+			}
+		});
+		btnAutoAssignDoctor.setBounds(61, 205, 297, 33);
+		contentPane.add(btnAutoAssignDoctor);
 	}
 
 }
