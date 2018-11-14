@@ -14,6 +14,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -158,14 +159,21 @@ public class CategoryPage extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-					int index = list.getSelectedIndex();
-		            System.out.println("Index Selected: " + index);
-		            String s = (String) list.getSelectedValue();
-		            System.out.println("Value Selected: " + s);
-//		            SelectedDoctorProfileDetails details =  new SelectedDoctorProfileDetails(s);
-		            SelectedDoctorProfileDetails details = new SelectedDoctorProfileDetails(s);
-		            details.setVisible(true);
+				int index = list.getSelectedIndex();
+	            System.out.println("Index Selected: " + index);
+	            String s = (String) list.getSelectedValue();
+	            System.out.println("Value Selected: " + s);
+	            if(index== -1)
+	            	JOptionPane.showMessageDialog(contentPane, "No such category exists..!", "Error", JOptionPane.ERROR_MESSAGE);
+//	            SelectedDoctorProfileDetails details =  new SelectedDoctorProfileDetails(s);
+	            else
+	            {
+	            	SelectedDoctorProfileDetails details = new SelectedDoctorProfileDetails(s);
+	            	details.setVisible(true);
+	            }
+	            	
 			}
+			
 		});
 		
 		btnView.setFont(new Font("Tahoma", Font.BOLD, 12));
