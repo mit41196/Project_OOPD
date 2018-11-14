@@ -7,6 +7,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
+import javax.swing.JList;
+import javax.swing.JButton;
 
 public class FindByIDPage extends JFrame {
 
@@ -54,6 +56,19 @@ public class FindByIDPage extends JFrame {
 		textField.setBounds(129, 72, 86, 20);
 		contentPane.add(textField);
 		textField.setColumns(10);
+		
+		JLabel lblNameOfDr = new JLabel("Name of Dr.");
+		lblNameOfDr.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNameOfDr.setBounds(30, 131, 91, 14);
+		contentPane.add(lblNameOfDr);
+		
+		JList list = new JList();
+		list.setBounds(129, 131, 115, 66);
+		contentPane.add(list);
+		
+		JButton btnView = new JButton("VIEW");
+		btnView.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnView.setBounds(129, 227, 89, 23);
+		contentPane.add(btnView);
 	}
-
 }
