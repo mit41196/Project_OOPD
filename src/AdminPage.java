@@ -71,9 +71,18 @@ public class AdminPage extends JFrame {
 		contentPane.add(lblWelcomeadmin);
 		contentPane.add(btnNewButton);
 		
-		JButton btnNewButton_1 = new JButton("Reassignment of Doctor");
-		btnNewButton_1.setBounds(54, 170, 301, 23);
-		contentPane.add(btnNewButton_1);
+		JButton btnReassignment = new JButton("Reassignment of Doctor");
+		btnReassignment.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+				
+			}
+		});
+		btnReassignment.setBounds(54, 170, 301, 23);
+		contentPane.add(btnReassignment);
 		
 		JButton btnLogout = new JButton("Logout");
 		btnLogout.setBounds(54, 238, 301, 23);

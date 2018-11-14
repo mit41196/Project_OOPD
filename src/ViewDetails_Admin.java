@@ -15,6 +15,8 @@ import java.awt.ScrollPane;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JTable;
@@ -82,6 +84,74 @@ public class ViewDetails_Admin extends JFrame {
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
+		table.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+				int row=table.rowAtPoint(arg0.getPoint());
+
+				int col= table.columnAtPoint(arg0.getPoint());
+				String selected_id = table.getValueAt(row,0).toString();
+//				JOptionPane.showMessageDialog(null,"Value in the cell clicked : " +table_1.getValueAt(row,0).toString());
+				System.out.println(selected_id);
+				
+				String selected_column = table.getColumnName(0);
+				System.out.println(selected_column);
+				System.out.println("Value in the cell clicked :"+ " "  +table.getValueAt(row,0).toString());
+				
+				if(selected_column.equals("uniqueId"))
+				{
+					ViewPatientProfile_Admin vppa;
+					try {
+						vppa = new ViewPatientProfile_Admin(selected_id);
+						vppa.setVisible(true);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				else
+				{
+					ViewDoctorProfile_Admin vdpa;
+					try {
+						vdpa = new ViewDoctorProfile_Admin(selected_id);
+						vdpa.setVisible(true);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
+				
+				
+			}
+		});
 		scrollPane.setViewportView(table);
 		
 		btnViewDoctor = new JButton("View Doctor");
@@ -96,7 +166,7 @@ public class ViewDetails_Admin extends JFrame {
 				{
 					
 					Statement st = c.createStatement();
-					ResultSet rs = st.executeQuery("Select * from doctor");
+					ResultSet rs = st.executeQuery("Select username, name, doctor_position, category from doctor");
 					
 					table.setModel(DbUtils.resultSetToTableModel(rs));
 				}
@@ -136,7 +206,7 @@ public class ViewDetails_Admin extends JFrame {
 				try 
 				{
 					st = c.createStatement();
-					ResultSet rs = st.executeQuery("Select * from patient");
+					ResultSet rs = st.executeQuery("Select uniqueId, name, doctor_username from patient");
 					table.setModel(DbUtils.resultSetToTableModel(rs));
 				} 
 				catch (SQLException e) 

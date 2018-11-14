@@ -6,13 +6,20 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
+import java.awt.Font;
+import javax.swing.SwingConstants;
 
 public class Diagnosis extends JFrame {
 
@@ -37,11 +44,15 @@ public class Diagnosis extends JFrame {
 	{
 		WindowEvent closeEvent = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
 		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(closeEvent);
-	}
-	/**
-	 * Create the frame.
-	 */
-	public Diagnosis(String user_name) {
+	};
+	
+	
+
+	public Diagnosis(String patient_name, String patient_id, String user_name) {
+		
+
+		
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -49,39 +60,75 @@ public class Diagnosis extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblPatientDiagnosis = new JLabel("PATIENT DIAGNOSIS");
-		lblPatientDiagnosis.setBounds(135, 12, 145, 15);
+		JLabel lblPatientDiagnosis = new JLabel("PATIENT DIAGNOSIS - ID (" + patient_id + ")");
+		lblPatientDiagnosis.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPatientDiagnosis.setFont(new Font("Times New Roman", Font.BOLD, 12));
+		lblPatientDiagnosis.setBounds(83, 12, 263, 31);
 		contentPane.add(lblPatientDiagnosis);
 		
-		JLabel lblPatientId = new JLabel("PATIENT ID:");
+		JLabel lblPatientId = new JLabel(patient_name);
 		lblPatientId.setBounds(35, 54, 107, 15);
 		contentPane.add(lblPatientId);
 		
 		JLabel lblDiagnosis = new JLabel("DIAGNOSIS:");
-		lblDiagnosis.setBounds(35, 106, 94, 15);
+		lblDiagnosis.setBounds(35, 88, 94, 15);
 		contentPane.add(lblDiagnosis);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setBounds(198, 106, 189, 106);
-		contentPane.add(textArea);
+		JTextArea diagnosis_textArea = new JTextArea();
+		diagnosis_textArea.setBounds(198, 88, 211, 61);
+		contentPane.add(diagnosis_textArea);
+		
+		JTextArea medicine_textArea = new JTextArea();
+		medicine_textArea.setBounds(198, 164, 211, 49);
+		contentPane.add(medicine_textArea);
+		
+		
 		
 		JButton btnSave = new JButton("SAVE");
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String diagnosis_pt = diagnosis_textArea.getText();
+				String prescribed_md = medicine_textArea.getText();
+			
+			try 
+			{
+				Class.forName("com.mysql.jdbc.Driver");
+			
+				Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
+				Statement st=c.createStatement();
+				st.executeUpdate("Update patient SET diagnosis = '"+diagnosis_pt+"', prescribed_medicines = '"+prescribed_md+"' where uniqueId ='"+patient_id+"'");
+				JOptionPane.showMessageDialog(contentPane, " SAVED...!","Success", JOptionPane.INFORMATION_MESSAGE);
+			}
+			catch(Exception e1)
+			{
+				e1.printStackTrace();
+			}
+			}
+		
+		});
 		btnSave.setBounds(270, 224, 117, 25);
 		contentPane.add(btnSave);
 		
 		JButton btnBack = new JButton("BACK");
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				close();
-				Doctor_Home dh=new Doctor_Home(user_name);
-				dh.setVisible(true);
+//				close();
+//				Doctor_Home dh=new Doctor_Home(user_name);
+//				dh.setVisible(true);
+				View_Patient_Details_Doctor vpdd = new View_Patient_Details_Doctor(patient_id, user_name);
+				vpdd.setVisible(true);
 			}
 		});
 		btnBack.setBounds(25, 224, 117, 25);
 		contentPane.add(btnBack);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(198, 49, 189, 24);
-		contentPane.add(comboBox);
+		JLabel lblNewLabel = new JLabel(patient_name);
+		lblNewLabel.setBounds(223, 54, 46, 14);
+		contentPane.add(lblNewLabel);
+		
+		JLabel lblPrescription = new JLabel("Prescription");
+		lblPrescription.setBounds(35, 164, 76, 14);
+		contentPane.add(lblPrescription);
+		
 	}
 }
