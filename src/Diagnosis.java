@@ -6,16 +6,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 
@@ -46,53 +41,7 @@ public class Diagnosis extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	JComboBox comboBox =  new JComboBox();;
-	
-	private void fillComboBoxId(String u )
-	{
-		System.out.println(u);
-		try 
-		{
-			Class.forName("com.mysql.jdbc.Driver");
-		
-			Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
-			Statement st=c.createStatement();
-			ResultSet rs=st.executeQuery("Select * from patient where doctor_username = '"+u+"'");
-			while(rs.next())
-			{
-				String uniqueid = rs.getString("uniqueId");
-				System.out.println(uniqueid);
-				comboBox.addItem(uniqueid);
-			}
-		}
-		catch(Exception e1)
-		{
-			e1.printStackTrace();
-		}
-	}
-	
-	
 	public Diagnosis(String user_name) {
-		fillComboBoxId(user_name);
-		String userid = "";
-		
-		try
-		{
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
-			Statement s2=c.createStatement();
-			ResultSet rs = s2.executeQuery("Select * from patient where doctor_username = '"+user_name+"'");
-			while(rs.next())
-			{
-				userid = rs.getString("uniqueid");
-			}
-		}
-		catch(Exception e1)
-		{
-			e1.printStackTrace();
-		}
-		
-		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -116,30 +65,7 @@ public class Diagnosis extends JFrame {
 		textArea.setBounds(198, 106, 189, 106);
 		contentPane.add(textArea);
 		
-		
-		
 		JButton btnSave = new JButton("SAVE");
-		btnSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String diagnosis_pt = textArea.getText();
-				String dept = (String)comboBox.getSelectedItem();
-			
-			try 
-			{
-				Class.forName("com.mysql.jdbc.Driver");
-			
-				Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
-				Statement st=c.createStatement();
-				st.executeUpdate("Update patient SET diagnosis='"+diagnosis_pt+"'where doctor_username = '"+user_name+"' and uniqueid = '"+dept+"'");
-				JOptionPane.showMessageDialog(contentPane, " SAVED...!","Success", JOptionPane.INFORMATION_MESSAGE);
-			}
-			catch(Exception e1)
-			{
-				e1.printStackTrace();
-			}
-			}
-		
-		});
 		btnSave.setBounds(270, 224, 117, 25);
 		contentPane.add(btnSave);
 		
@@ -154,12 +80,8 @@ public class Diagnosis extends JFrame {
 		btnBack.setBounds(25, 224, 117, 25);
 		contentPane.add(btnBack);
 		
-		
+		JComboBox comboBox = new JComboBox();
 		comboBox.setBounds(198, 49, 189, 24);
 		contentPane.add(comboBox);
-	
-		
-		
 	}
-	
 }
