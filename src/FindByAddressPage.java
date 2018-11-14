@@ -16,6 +16,7 @@ import java.sql.Statement;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 
@@ -78,7 +79,7 @@ public class FindByAddressPage extends JFrame {
 			System.out.println("adsdasd");
 			Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
 			Statement st=c.createStatement();
-			ResultSet rs=st.executeQuery("SELECT * FROM doctor WHERE category = '"+name+"'");
+			ResultSet rs=st.executeQuery("SELECT * FROM doctor WHERE address = '"+name+"'");
 			System.out.println(rs.getFetchSize());
 			while(rs.next())
 			{
@@ -125,6 +126,24 @@ public class FindByAddressPage extends JFrame {
 		contentPane.add(lblNameOfDr);
 		
 		JButton btnView = new JButton("VIEW");
+		btnView.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				int index = list.getSelectedIndex();
+	            System.out.println("Index Selected: " + index);
+	            String s = (String) list.getSelectedValue();
+	            System.out.println("Value Selected: " + s);
+	            if(index== -1)
+	            	JOptionPane.showMessageDialog(contentPane, "No such address exists..!", "Error", JOptionPane.ERROR_MESSAGE);
+//	            SelectedDoctorProfileDetails details =  new SelectedDoctorProfileDetails(s);
+	            else
+	            {
+	            	SelectedDoctorProfileDetails details = new SelectedDoctorProfileDetails(s);
+	            	details.setVisible(true);
+	            }
+	            	
+			}
+		});
 		btnView.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnView.setBounds(150, 215, 89, 23);
 		contentPane.add(btnView);
@@ -140,6 +159,14 @@ public class FindByAddressPage extends JFrame {
 		contentPane.add(lblAddress);
 		
 		textField = new JTextField();
+		textField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("breaking");
+				list.setVisible(true);
+				String selected_id = textField.getText().toString();
+				fillJListHod(list, selected_id);
+			}
+		});
 		textField.setBounds(190, 76, 133, 23);
 		contentPane.add(textField);
 		textField.setColumns(10);

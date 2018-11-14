@@ -16,6 +16,8 @@ import javax.swing.JList;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class FindByNamePage extends JFrame {
 	
@@ -77,7 +79,19 @@ public class FindByNamePage extends JFrame {
 		label.setBounds(22, 131, 46, 14);
 		contentPane.add(label);
 		
+		
 		JButton btnView = new JButton("VIEW");
+		btnView.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+	            //System.out.println("Index Selected: " + index);
+	            String s = textField.getText().toString();
+	            System.out.println("Value Selected: " + s);
+//	            SelectedDoctorProfileDetails details =  new SelectedDoctorProfileDetails(s);
+	            SelectedDoctorProfileDetails details = new SelectedDoctorProfileDetails(s);
+	            details.setVisible(true);
+			}
+		});
 		btnView.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnView.setBounds(139, 88, 89, 46);
 		contentPane.add(btnView);
@@ -88,6 +102,7 @@ public class FindByNamePage extends JFrame {
 		contentPane.add(lblSelectDrBy);
 		
 		textField = new JTextField();
+		
 		textField.setBounds(203, 16, 86, 20);
 		contentPane.add(textField);
 		textField.setColumns(10);
