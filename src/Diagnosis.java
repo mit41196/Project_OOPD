@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
+import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -30,23 +31,16 @@ public class Diagnosis extends JFrame {
 	JRadioButton jRadioButton1 = new JRadioButton();
 	JRadioButton jRadioButton2 = new JRadioButton();
 	JLabel L1;
+	//String pat_type="";
+	Connection c;
+	Statement st;
+	String criticalField="";
+	Logfile lgf=new Logfile();
 	
 
 	/**
 	 * Launch the application.
 	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					Diagnosis frame = new Diagnosis();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 	public void close()
 	{
 		WindowEvent closeEvent = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
@@ -64,6 +58,24 @@ public class Diagnosis extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		JRadioButton rdbtnCritical = new JRadioButton("Critical");
+		JRadioButton rdbtnNonCritical = new JRadioButton("Non Critical");
+		
+		jRadioButton1.setText("Critical");
+		jRadioButton1.setText("Non-Critical"); 
+		jRadioButton1.setBounds(120, 30, 120, 50); 
+		jRadioButton2.setBounds(250, 30, 80, 50); 
+		G.add(jRadioButton1); 
+	    G.add(jRadioButton2);
+	    G.add(rdbtnCritical);
+		rdbtnCritical.setBounds(198, 229, 109, 23);
+		contentPane.add(rdbtnCritical);
+		//JRadioButton rdbtnNonCritical = new JRadioButton("Non Critical");
+		G.add(rdbtnNonCritical);
+		rdbtnNonCritical.setBounds(198, 253, 109, 23);
+		contentPane.add(rdbtnNonCritical);
+		
 		
 		JLabel lblPatientDiagnosis = new JLabel("PATIENT DIAGNOSIS - ID (" + patient_id + ")");
 		lblPatientDiagnosis.setHorizontalAlignment(SwingConstants.CENTER);
@@ -87,32 +99,41 @@ public class Diagnosis extends JFrame {
 		medicine_textArea.setBounds(198, 164, 211, 49);
 		contentPane.add(medicine_textArea);
 		
-		jRadioButton1.setText("Critical");
-		jRadioButton1.setText("Non-Critical"); 
-		jRadioButton1.setBounds(120, 30, 120, 50); 
-		jRadioButton2.setBounds(250, 30, 80, 50); 
-		G.add(jRadioButton1); 
-	    G.add(jRadioButton2);
-		
-		
 		JButton btnSave = new JButton("SAVE");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String diagnosis_pt = diagnosis_textArea.getText();
 				String prescribed_md = medicine_textArea.getText();
+				//JRadioButton rdbtnCritical = new JRadioButton("Critical");
+				if(rdbtnCritical.isSelected())
+				{
+					criticalField = rdbtnCritical.getText();
+				}
+				else
+				{
+					criticalField = rdbtnNonCritical.getText();
+				}
+				
+				System.out.println(criticalField);
 			
 			try 
 			{
 				Class.forName("com.mysql.jdbc.Driver");
-			
-				Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
-				Statement st=c.createStatement();
-				st.executeUpdate("Update patient SET diagnosis = '"+diagnosis_pt+"', prescribed_medicines = '"+prescribed_md+"' where uniqueId ='"+patient_id+"'");
-				JOptionPane.showMessageDialog(contentPane, " SAVED...!","Success", JOptionPane.INFORMATION_MESSAGE);
+				System.out.println(diagnosis_pt);
+				System.out.println(prescribed_md);
+				
+				c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
+				st=c.createStatement();
+				st.executeUpdate("Update patient SET diagnosis = '"+diagnosis_pt+"', prescribed_medicines = '"+prescribed_md+"',patient_type = '"+criticalField+"' where uniqueId ='"+patient_id+"'");
+				st.executeUpdate("Update patient SET status = '"+"Treated"+"' where uniqueId ='"+patient_id+"'");
+				JOptionPane.showMessageDialog(contentPane, " \n SAVED...! ","Success", JOptionPane.INFORMATION_MESSAGE);
 			}
 			catch(Exception e1)
 			{
 				e1.printStackTrace();
+				System.out.println("Exception is here!!");
+				lgf.logfile(" Exception Caught");
+
 			}
 			}
 		
@@ -123,9 +144,6 @@ public class Diagnosis extends JFrame {
 		JButton btnBack = new JButton("BACK");
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				close();
-//				Doctor_Home dh=new Doctor_Home(user_name);
-//				dh.setVisible(true);
 				View_Patient_Details_Doctor vpdd = new View_Patient_Details_Doctor(patient_id, user_name);
 				vpdd.setVisible(true);
 			}
@@ -141,15 +159,6 @@ public class Diagnosis extends JFrame {
 		lblPrescription.setBounds(35, 164, 76, 14);
 		contentPane.add(lblPrescription);
 		
-		JRadioButton rdbtnCritical = new JRadioButton("Critical");
-		G.add(rdbtnCritical);
-		rdbtnCritical.setBounds(198, 229, 109, 23);
-		contentPane.add(rdbtnCritical);
-		
-		JRadioButton rdbtnNonCritical = new JRadioButton("Non Critical");
-		G.add(rdbtnNonCritical);
-		rdbtnNonCritical.setBounds(198, 253, 109, 23);
-		contentPane.add(rdbtnNonCritical);
 		
 		JLabel lblStateOfPatient = new JLabel("State of Patient");
 		lblStateOfPatient.setBounds(35, 238, 131, 38);

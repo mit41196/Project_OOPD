@@ -24,46 +24,13 @@ public class FindByNamePage extends JFrame {
 	private JPanel contentPane;
 	DefaultListModel model;
 	private JTextField textField;
+	Logfile lgf=new Logfile();
 	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					FindByNamePage frame = new FindByNamePage();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
 	 */
-//	private void fillComboBoxId()
-//	{
-//		try 
-//		{
-//			Class.forName("com.mysql.jdbc.Driver");
-//		
-//			Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
-//			Statement st=c.createStatement();
-//			ResultSet rs=st.executeQuery("Select * from doctor");
-//			while(rs.next())
-//			{
-//				String name = rs.getString("name");
-//				//comboBox.addItem(name);
-//			}
-//			System.out.println("query");
-//		}
-//		catch(Exception e1)
-//		{
-//			e1.printStackTrace();
-//		}
-//	}
-
-	public FindByNamePage() {
+	public FindByNamePage(String username) {
 		//fillComboBoxId();
 		model = new DefaultListModel();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -88,17 +55,17 @@ public class FindByNamePage extends JFrame {
 	            String s = textField.getText().toString();
 	            System.out.println("Value Selected: " + s);
 //	            SelectedDoctorProfileDetails details =  new SelectedDoctorProfileDetails(s);
-	            SelectedDoctorProfileDetails details = new SelectedDoctorProfileDetails(s);
+	            SelectedDoctorProfileDetails details = new SelectedDoctorProfileDetails(s, username);
 	            details.setVisible(true);
 			}
 		});
 		btnView.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnView.setBounds(139, 88, 89, 46);
+		btnView.setBounds(60, 91, 89, 20);
 		contentPane.add(btnView);
 		
 		JLabel lblSelectDrBy = new JLabel("Select DR. by NAME:");
 		lblSelectDrBy.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblSelectDrBy.setBounds(49, 11, 202, 28);
+		lblSelectDrBy.setBounds(49, 11, 156, 28);
 		contentPane.add(lblSelectDrBy);
 		
 		textField = new JTextField();
@@ -106,6 +73,21 @@ public class FindByNamePage extends JFrame {
 		textField.setBounds(203, 16, 86, 20);
 		contentPane.add(textField);
 		textField.setColumns(10);
+		
+		JButton btnBack = new JButton("Back");
+		btnBack.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				SearchDoctor sd = new SearchDoctor(username);
+				sd.setVisible(true);
+			}
+		});
+		
+		btnBack.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnBack.setBounds(234, 91, 89, 23);
+		contentPane.add(btnBack);
 
 			}
 }

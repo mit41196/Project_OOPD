@@ -20,6 +20,7 @@ import java.awt.Toolkit;
 public class AdminPage extends JFrame {
 
 	private JPanel contentPane;
+	Logfile lgf=new Logfile();
 
 	/**
 	 * Launch the application.
@@ -72,7 +73,7 @@ public class AdminPage extends JFrame {
 		contentPane.add(btnNewButton);
 		
 		JButton btnLogout = new JButton("Logout");
-		btnLogout.setBounds(54, 199, 301, 23);
+		btnLogout.setBounds(54, 264, 301, 23);
 		
 		btnLogout.addActionListener(new ActionListener() {
 			
@@ -86,7 +87,7 @@ public class AdminPage extends JFrame {
 		});
 		
 		contentPane.add(btnLogout);
-		
+		int temp=0;
 		JButton btnViewDetails = new JButton("View Details");
 		btnViewDetails.addActionListener(new ActionListener() {
 			
@@ -95,13 +96,24 @@ public class AdminPage extends JFrame {
 				// TODO Auto-generated method stub
 				close();
 				ViewDetails_Admin viewDetail;
+				
 				try {
+//					if(temp==1)
+//					{
 					close();
 					viewDetail = new ViewDetails_Admin();
 					viewDetail.setVisible(true);
-				} catch (SQLException e1) {
+//				} 
+				
+//				else
+//					{
+//					throw new SQLException();
+//					}
+			}catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+					System.out.println("Exception is here!!");
+					 lgf.logfile(" Exception caught");
 				}
 				
 				
@@ -131,13 +143,60 @@ public class AdminPage extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				close();
+				//close();
 				UpdateDepartment ud = new UpdateDepartment();
 				ud.setVisible(true);
 			}
 		});
 		btnUpdateDepartment.setBounds(54, 165, 301, 23);
 		contentPane.add(btnUpdateDepartment);
+		
+		JButton btnDischargePatient = new JButton("Discharge Patient");
+		btnDischargePatient.setBounds(54, 63, 301, 23);
+		btnDischargePatient.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				close();
+				DischargePatient dischargepatient = null;
+				try {
+//					if(temp==1)
+//					{
+//					
+					dischargepatient = new DischargePatient();
+					//}
+//					else
+//					{
+//					
+//						throw new SQLException();
+//					}
+				} 
+				catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+//					System.out.println("Exception is here!!");
+//					 lgf.logfile("Admin Exception 2");
+//	
+				}
+				dischargepatient.setVisible(true);
+				
+			}
+		});
+		
+		btnDischargePatient.setBounds(54, 199, 301, 23);
+		contentPane.add(btnDischargePatient);
+		
+		JButton btnAddRoomsIn = new JButton("Add Rooms in Hospital ");
+		btnAddRoomsIn.setBounds(54, 63, 301, 23);
+		btnAddRoomsIn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				close();
+				AddRoom addroom = new AddRoom();
+				addroom.setVisible(true);
+				
+			}
+		});
+		
+		btnAddRoomsIn.setBounds(54, 230, 301, 23);
+		contentPane.add(btnAddRoomsIn);
 		
 			}
 }

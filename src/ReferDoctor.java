@@ -32,37 +32,32 @@ public class ReferDoctor extends JFrame {
 	Statement s2;
 	ResultSet rs;
 	ResultSet rs1;
+	ResultSet rs2;
 	Connection c;
+	Logfile lgf=new Logfile();
 
 	/**
 	 * Launch the application.
 	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					ReferDoctor frame = new ReferDoctor();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 
 	/**
 	 * Create the frame.
 	 * @throws SQLException 
 	 */
-	public ReferDoctor(String user_name, String patient_id) throws SQLException {
-		
-		
+	public ReferDoctor(String user_name, String patient_id) throws SQLException
+	{
 		String ss = "Senior Specialists";
 		String s = "Specialists";
 		String sr = "Senior Residents";
+		String surgeon = "Surgeon";
+		String senior_surgeon = "Senior Surgeon";
+		String not_surgeon = "Not a Surgeon";
 		String dept_name = "";
 		String doctor_pos = "";
+		String doctor_type = "";
 		String patient_name = "";
+		String patient_type = "";
+		int count_value=0;
 		table = new JTable();
 		table.addMouseListener(new MouseListener() {
 			
@@ -81,13 +76,11 @@ public class ReferDoctor extends JFrame {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
 			}
 			
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
 			}
 			
 			@Override
@@ -110,9 +103,11 @@ public class ReferDoctor extends JFrame {
 				catch(Exception e1)
 				{
 					e1.printStackTrace();
-				}
+					System.out.println("Exception is here!!");
+					lgf.logfile(" Exception Caught");
 
-				
+				}
+			
 			}
 		});
 		
@@ -141,21 +136,33 @@ public class ReferDoctor extends JFrame {
 			Class.forName("com.mysql.jdbc.Driver");
 			c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
 			s2=c.createStatement();
-			rs = s2.executeQuery("Select * from doctor where username = '"+user_name+"'");
+			rs2 = s2.executeQuery("Select * from doctor where username = '"+user_name+"' and patients_count > 0");
 			
-			while(rs.next())
+			while(rs2.next())
 			{
-				dept_name = rs.getString("category");
-				doctor_pos = rs.getString("doctor_position");
+				dept_name = rs2.getString("category");
+				doctor_pos = rs2.getString("doctor_position");
+				doctor_type = rs2.getString("doctor_type");
+				count_value = rs2.getInt("patients_count");
+//				patient_type = rs1.getString("patient_type");
+				
 			}
-			
-			
-			
-//			table.setModel(DbUtils.resultSetToTableModel(rs));
+			//rs.close();
+			rs1 = s2.executeQuery("Select * from patient where uniqueId='"+patient_id+"'");
+			while(rs1.next())
+			{
+				patient_type = rs1.getString("patient_type");
+				
+			}
+			System.out.println(patient_type);
+
 		}
 		catch(Exception e1)
 		{
 			e1.printStackTrace();
+			System.out.println("Exception is here!!");
+			lgf.logfile(" Exception Caught");
+
 		}
 		rs1 = s2.executeQuery("Select * from patient where uniqueId = '"+patient_id+"'");
 		while(rs1.next())
@@ -164,27 +171,57 @@ public class ReferDoctor extends JFrame {
 		}
 		
 		System.out.println(dept_name);
-		if (doctor_pos.equals("Junior Residents"))
+		System.out.println(patient_type);
+		if(patient_type.equals("Critical"))
 		{
-			rs = s2.executeQuery("Select username, name, doctor_position, category from doctor where doctor_position IN('"+ss+"', '"+s+"', '"+sr+"') and category = '"+dept_name+"'");
-			table.setModel(DbUtils.resultSetToTableModel(rs));
-			
+			if (doctor_pos.equals("Junior Residents"))
+			{
+				rs = s2.executeQuery("Select username, name, doctor_position, category, doctor_type from doctor where doctor_position IN('"+ss+"', '"+s+"', '"+sr+"') and category = '"+dept_name+"'");
+				table.setModel(DbUtils.resultSetToTableModel(rs));
+				
+			}
+			else if(doctor_pos.equals("Senior Residents"))
+			{
+				rs = s2.executeQuery("Select username, name, doctor_position, category, doctor_type from doctor where doctor_position IN('"+ss+"', '"+s+"') and category = '"+dept_name+"'");
+				table.setModel(DbUtils.resultSetToTableModel(rs));
+			}
+			else if(doctor_pos.equals("Specialists"))
+			{
+				rs = s2.executeQuery("Select username, name, doctor_position, category from doctor where doctor_position IN('"+ss+"')");
+				table.setModel(DbUtils.resultSetToTableModel(rs));
+			}
+			else
+			{
+				rs = s2.executeQuery("Select username, name, doctor_position, category from doctor where doctor_position IN('"+ss+"')");
+				table.setModel(DbUtils.resultSetToTableModel(rs));
+			}
 		}
-		else if(doctor_pos.equals("Senior Residents"))
+		
+		if(patient_type.equals("Non Critical"))
 		{
-			rs = s2.executeQuery("Select username, name, doctor_position, category from doctor where doctor_position IN('"+ss+"', '"+s+"') and category = '"+dept_name+"'");
-			table.setModel(DbUtils.resultSetToTableModel(rs));
+			if (doctor_pos.equals("Junior Residents"))
+			{
+				rs = s2.executeQuery("Select username, name, doctor_position, category, doctor_type from doctor where doctor_position IN('"+ss+"', '"+s+"', '"+sr+"') and category = '"+dept_name+"' and doctor_type NOT IN('"+surgeon+"', '"+senior_surgeon+"')");
+				table.setModel(DbUtils.resultSetToTableModel(rs));
+				
+			}
+			else if(doctor_pos.equals("Senior Residents"))
+			{
+				rs = s2.executeQuery("Select username, name, doctor_position, category, doctor_type from doctor where doctor_position IN('"+ss+"', '"+s+"') and category = '"+dept_name+"' and doctor_type NOT IN('\"+surgeon+\"', '\"+senior_surgeon+\"')");
+				table.setModel(DbUtils.resultSetToTableModel(rs));
+			}
+			else if(doctor_pos.equals("Specialists"))
+			{
+				rs = s2.executeQuery("Select username, name, doctor_position, category from doctor where doctor_position IN('"+ss+"') and doctor_type NOT IN('\"+surgeon+\"', '\"+senior_surgeon+\"')");
+				table.setModel(DbUtils.resultSetToTableModel(rs));
+			}
+			else
+			{
+				rs = s2.executeQuery("Select username, name, doctor_position, category from doctor where doctor_position IN('"+ss+"') and doctor_type NOT IN('\"+surgeon+\"', '\"+senior_surgeon+\"')");
+				table.setModel(DbUtils.resultSetToTableModel(rs));
+			}
 		}
-		else if(doctor_pos.equals("Specialists"))
-		{
-			rs = s2.executeQuery("Select username, name, doctor_position, category from doctor where doctor_position IN('"+ss+"')");
-			table.setModel(DbUtils.resultSetToTableModel(rs));
-		}
-		else
-		{
-			rs = s2.executeQuery("Select username, name, doctor_position, category from doctor where doctor_position IN('"+ss+"')");
-			table.setModel(DbUtils.resultSetToTableModel(rs));
-		}
+		
 		
 		scrollPane.setViewportView(table);
 		

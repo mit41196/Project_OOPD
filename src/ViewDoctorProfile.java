@@ -16,6 +16,8 @@ public class ViewDoctorProfile extends JFrame {
 	/**
 	 * Launch the application.
 	 */
+	String username;
+	Logfile lgf=new Logfile();
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -48,7 +50,7 @@ public class ViewDoctorProfile extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				//close();
-				CategoryPage categorypage = new CategoryPage();
+				CategoryPage categorypage = new CategoryPage(username);
 				categorypage.setVisible(true);
 			}
 		});
@@ -57,44 +59,13 @@ public class ViewDoctorProfile extends JFrame {
 		getContentPane().add(btnCategory);
 		
 		JButton btnNameOfDoctor = new JButton("Name of Doctor");
-		btnNameOfDoctor.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				//close();
-				FindByNamePage findbynamepage = new FindByNamePage();
-				findbynamepage.setVisible(true);
-			}
-		});
-		
 		btnNameOfDoctor.setBounds(99, 87, 175, 23);
 		getContentPane().add(btnNameOfDoctor);
 		
 		JButton btnAddressOfDoctor = new JButton("Address of Doctor");
-		btnAddressOfDoctor.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				//close();
-				FindByAddressPage findbyaddresspage = new FindByAddressPage();
-				findbyaddresspage.setVisible(true);
-			}
-		});
-		
 		btnAddressOfDoctor.setBounds(99, 126, 175, 23);
 		getContentPane().add(btnAddressOfDoctor);
 		
-//		JButton btnIdOfDoctor = new JButton("ID of Doctor");
-//		btnIdOfDoctor.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent arg0) {
-//				
-//				//close();
-//				//FindByIDPage findbyidpage = new FindByIDPage();
-//				findbyidpage.setVisible(true);
-//			}
-//		});
-//		
-//		btnIdOfDoctor.setBounds(99, 163, 175, 23);
-//		getContentPane().add(btnIdOfDoctor);
-//		
 	}
 
 }

@@ -25,22 +25,23 @@ public class FindByIDPage extends JFrame {
 	JList list;
 	DefaultListModel model;
 	private JTextField textField;
+	Logfile lgf=new Logfile();
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					FindByIDPage frame = new FindByIDPage();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					FindByIDPage frame = new FindByIDPage();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
@@ -74,9 +75,12 @@ public class FindByIDPage extends JFrame {
 		catch(Exception e1)
 		{
 			e1.printStackTrace();
+			System.out.println("Exception is here!!");
+			lgf.logfile(" Exception Caught");
+
 		}
 	}
-	public FindByIDPage() {
+	public FindByIDPage(String username) {
 		model = new DefaultListModel();
 		 list = new JList();
 		 list.setVisible(false);
@@ -87,6 +91,24 @@ public class FindByIDPage extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		System.out.println("asdfgh");
+		
+		textField = new JTextField();
+	
+		textField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("breaking");
+				
+				String selected_id = textField.getText().toString();
+				System.out.println(selected_id + "hello");
+				fillJListHod(list, selected_id);
+				list.setVisible(true);
+			}
+		});
+		
+		textField.setBounds(129, 72, 86, 20);
+		contentPane.add(textField);
+		textField.setColumns(10);
+		
 		
 		list.setBounds(129, 131, 115, 66);
 		contentPane.add(list);
@@ -120,29 +142,32 @@ public class FindByIDPage extends JFrame {
 //	            SelectedDoctorProfileDetails details =  new SelectedDoctorProfileDetails(s);
 	            else
 	            {
-	            	SelectedDoctorProfileDetails details = new SelectedDoctorProfileDetails(s);
+	            	SelectedDoctorProfileDetails details = new SelectedDoctorProfileDetails(s, username);
 	            	details.setVisible(true);
 	            }
 	            	
 			}
 		});
 		
-		textField = new JTextField();
-		textField.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("breaking");
-				list.setVisible(true);
-				String selected_id = textField.getText().toString();
-				fillJListHod(list, selected_id);
-			}
-		});
 		
-		textField.setBounds(129, 72, 86, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		
 		
 		btnView.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnView.setBounds(129, 227, 89, 23);
 		contentPane.add(btnView);
+		
+		JButton btnBack = new JButton("Back");
+		btnBack.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				SearchDoctor sd = new SearchDoctor(username);
+				sd.setVisible(true);
+			}
+		});
+		btnBack.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnBack.setBounds(246, 228, 89, 23);
+		contentPane.add(btnBack);
 	}
 }

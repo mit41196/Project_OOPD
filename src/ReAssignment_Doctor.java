@@ -27,22 +27,11 @@ public class ReAssignment_Doctor extends JFrame {
 	JComboBox comboBox;
 	JList list;
 	DefaultListModel model;
+	Logfile lgf=new Logfile();
 
 	/**
 	 * Launch the application.
 	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					ReAssignment_Doctor frame = new ReAssignment_Doctor();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 
 	/**
 	 * Create the frame.
@@ -68,6 +57,7 @@ public class ReAssignment_Doctor extends JFrame {
 	{
 		try
 		{
+			model.clear();
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
 			Statement st=c.createStatement();
@@ -76,17 +66,21 @@ public class ReAssignment_Doctor extends JFrame {
 			while(rs.next())
 			{
 				String name = rs.getString("name");
-				model.addElement(name);
+				int count = rs.getInt("patients_count");
+				if (count > 0)
+				{
+					model.addElement(name);
+				}
 			}
 			list.setModel(model);
-			
-			rs.close();
-			st.close();
 			
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			System.out.println("Exception is here!!");
+			lgf.logfile(" Exception Caught");
+
 		}
 	}
 	public ReAssignment_Doctor(String patient_id) throws ClassNotFoundException, SQLException {
@@ -129,6 +123,9 @@ public class ReAssignment_Doctor extends JFrame {
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			System.out.println("Exception is here!!");
+			lgf.logfile(" Exception Caught");
+
 		}
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -172,6 +169,7 @@ public class ReAssignment_Doctor extends JFrame {
 				// TODO Auto-generated method stub
 				list.setVisible(true);
 				String selected_id = comboBox.getSelectedItem().toString();
+				System.out.println(selected_id);
 				fillJList(list, selected_id);
 			}
 		});
@@ -200,20 +198,41 @@ public class ReAssignment_Doctor extends JFrame {
 					Statement s2=c.createStatement();
 					ResultSet rs = s2.executeQuery("Select * from doctor where name = '"+selected_name+"'");
 					String us_name = "";
+					int old_count = -1;
 					while(rs.next())
 					{
 						us_name = rs.getString("username");
+						old_count = rs.getInt("patients_count");
 					}
-					
+					old_count = old_count -1 ;
 					rs.close();
 					s2.executeUpdate("Update patient SET doctor_username='"+us_name+"' where uniqueId='"+patient_id+"'");
+					s2.executeUpdate("Update doctor SET patients_count='"+old_count+"' where username ='"+us_name+"'");
+					
+					String old_doc_user = "";
+					ResultSet rss = s2.executeQuery("Select * from patient where uniqueId = '"+patient_id+"'");
+					while(rss.next())
+					{
+						old_doc_user = rss.getString("doctor_username");
+						
+					}
+					ResultSet rst = s2.executeQuery("Select * from doctor where username = '"+old_doc_user+"'");
+					int cnt = -1;
+					while(rst.next())
+					{
+						cnt = rst.getInt("patients_count");
+					}
+					cnt = cnt + 1;
+					s2.executeUpdate("Update doctor SET patients_count='"+cnt+"' where username ='"+old_doc_user+"'");
 					JOptionPane.showMessageDialog(contentPane, "REASSIGNMENT DONE...!\n" + "New Assigned Doctor: " + selected_name,"Success", JOptionPane.INFORMATION_MESSAGE);
 				}	
 				catch(Exception e1)
 				{
 					e1.printStackTrace();
+					System.out.println("Exception is here!!");
+					lgf.logfile(" Exception Caught");
+
 				}
-				
 			}
 		});
 		btnReassign.setBounds(147, 227, 89, 23);
@@ -228,13 +247,16 @@ public class ReAssignment_Doctor extends JFrame {
 				ViewPatientProfile_Admin vppa;
 				try 
 				{
-					vppa = new ViewPatientProfile_Admin(patient_id);
+					vppa = new ViewPatientProfile_Admin(patient_id, false);
 					vppa.setVisible(true);
 				} 
 				catch (SQLException e1) 
 				{
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+					System.out.println("Exception is here!!");
+					lgf.logfile(" Exception Caught");
+
 				}
 			}
 		});

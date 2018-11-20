@@ -22,27 +22,29 @@ public class SearchDoctor extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	Logfile lgf=new Logfile();
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					SearchDoctor frame = new SearchDoctor();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	//String username;
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					SearchDoctor frame = new SearchDoctor(username);
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
 	 */
-	public SearchDoctor() {
+	public SearchDoctor(String username) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(null);
@@ -59,7 +61,7 @@ public class SearchDoctor extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				//close();
-				CategoryPage categorypage = new CategoryPage();
+				CategoryPage categorypage = new CategoryPage(username);
 				categorypage.setVisible(true);
 			}
 		});
@@ -73,7 +75,7 @@ public class SearchDoctor extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				//close();
-				FindByNamePage findbynamepage = new FindByNamePage();
+				FindByNamePage findbynamepage = new FindByNamePage(username);
 				findbynamepage.setVisible(true);
 			}
 		});
@@ -87,7 +89,7 @@ public class SearchDoctor extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				//close();
-				FindByAddressPage findbyaddresspage = new FindByAddressPage();
+				FindByAddressPage findbyaddresspage = new FindByAddressPage(username);
 				findbyaddresspage.setVisible(true);
 			}
 		});
@@ -97,6 +99,16 @@ public class SearchDoctor extends JFrame {
 		getContentPane().add(btnAddressOfDoctor);
 		
 		JButton btnBack = new JButton("BACK");
+		btnBack.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+				PatientPage pp = new PatientPage(username);
+				pp.setVisible(true);
+			}
+		});
 		btnBack.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnBack.setBounds(167, 213, 89, 23);
 		getContentPane().add(btnBack);
@@ -106,7 +118,7 @@ public class SearchDoctor extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				//close();
-				FindByIDPage findbyidpage = new FindByIDPage();
+				FindByIDPage findbyidpage = new FindByIDPage(username);
 				findbyidpage.setVisible(true);
 			}
 		});

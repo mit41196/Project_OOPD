@@ -28,22 +28,13 @@ public class SelectedDoctorProfileDetails extends JFrame {
 	ResultSet rs;
 	int range;
 	int countvalue;
+	final String username1=null;
+	Logfile lgf=new Logfile();
+
 	
 	/**
 	 * Launch the application.
 	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					View_Doctor_Profile frame = new View_Doctor_Profile();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 	public void close()
 	{
 		WindowEvent closeEvent = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
@@ -53,7 +44,7 @@ public class SelectedDoctorProfileDetails extends JFrame {
 	 * Create the frame.
 	 */
 	
-	public SelectedDoctorProfileDetails(String doctor_name) {
+	public SelectedDoctorProfileDetails(String doctor_name, String user_name) {
 		
 		String name = "";
 		String address = "";
@@ -63,7 +54,6 @@ public class SelectedDoctorProfileDetails extends JFrame {
 		String doctor_position = "";
 		String username = "";
 		String timings = "";
-		//int countvalue;
 		
 		try
 		{
@@ -78,15 +68,17 @@ public class SelectedDoctorProfileDetails extends JFrame {
 				contact = rs.getString("contact");
 				email = rs.getString("email");
 				category = rs.getString("category");
+				timings=rs.getString("timings");
 				doctor_position = rs.getString("doctor_position");
 				username = rs.getString("username");
-				timings=rs.getString("timings");
 				countvalue=rs.getInt("patients_count");
 			}
 		}
 		catch(Exception e1)
 		{
 			e1.printStackTrace();
+			System.out.println("Exception is here!!");
+			lgf.logfile(" Exception caught");
 		}
 		final String name1 = new String(name);
 		final String timings1= new String(timings);
@@ -96,6 +88,7 @@ public class SelectedDoctorProfileDetails extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
 		
 		JLabel lblYourProfile = new JLabel("YOUR PROFILE");
 		lblYourProfile.setBounds(145, 12, 129, 15);
@@ -125,34 +118,12 @@ public class SelectedDoctorProfileDetails extends JFrame {
 		lblTimings.setBounds(56, 197, 70, 15);
 		contentPane.add(lblTimings);
 		
+		//Jlabel lblTimings=new Jlabel();
+		
 		JLabel lblDoctorPrecedence = new JLabel("DOCTOR PRECEDENCE:");
-		lblDoctorPrecedence.setBounds(56, 223, 169, 15);
+		lblDoctorPrecedence.setBounds(56, 234, 169, 15);
 		contentPane.add(lblDoctorPrecedence);
 		
-//		JButton btnBack = new JButton("BACK");
-//		btnBack.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				close();
-//				Doctor_Home dh=new Doctor_Home(user_name);
-//				dh.setVisible(true);
-//			}
-//		});
-//		btnBack.setBounds(12, 292, 117, 25);
-//		contentPane.add(btnBack);
-//		
-//		JButton btnUpdate = new JButton("EDIT");
-//		btnUpdate.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				close();
-//				Edit_Doctor ed =  new Edit_Doctor(user_name);
-//				ed.setVisible(true);
-//			}
-//		});
-//		
-		
-//		btnUpdate.setBounds(293, 292, 117, 25);
-//		contentPane.add(btnUpdate);
-//		
 		JLabel lblNewLabel_4 = new JLabel(name);
 		lblNewLabel_4.setFont(new Font("Times New Roman", Font.BOLD, 12));
 		lblNewLabel_4.setBounds(240, 38, 46, 14);
@@ -178,11 +149,6 @@ public class SelectedDoctorProfileDetails extends JFrame {
 		lblNewLabel_8.setBounds(210, 143, 169, 14);
 		contentPane.add(lblNewLabel_8);
 		
-//		JLabel lblNewLabel_9 = new JLabel(scheduled_days);
-//		lblNewLabel_9.setFont(new Font("Times New Roman", Font.BOLD, 12));
-//		lblNewLabel_9.setBounds(207, 170, 172, 14);
-//		contentPane.add(lblNewLabel_9);
-//		
 		JLabel lblNewLabel_10 = new JLabel(doctor_position);
 		lblNewLabel_10.setFont(new Font("Times New Roman", Font.BOLD, 12));
 		lblNewLabel_10.setBounds(220, 224, 169, 14);
@@ -190,6 +156,7 @@ public class SelectedDoctorProfileDetails extends JFrame {
 		
 		JButton btnBookAppointment = new JButton("Book Appointment");
 
+		System.out.println("error go away !");
 		btnBookAppointment.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -203,34 +170,67 @@ public class SelectedDoctorProfileDetails extends JFrame {
 					c = DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
 					s2=c.createStatement();
 					s2.executeUpdate("Update doctor SET patients_count = '"+countvalue+"' where name = '"+doctor_name+"'");
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					rs = s2.executeQuery("Select * from doctor where name = '"+doctor_name+"'");
+					String username1= "";
+					while(rs.next())
+					{
+						username1 = rs.getString("username");
+					}
+				System.out.println(username1 + user_name + "sdsdsd");
+				s2.executeUpdate("Update patient SET doctor_username = '"+username1+"', status = '"+"Untreated"+"' where uniqueId = '"+user_name+"'");
 				}
-				
+				catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					System.out.println("Exception is here!!");
+					lgf.logfile(" Exception Caught");
+
+				} 
+				catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					System.out.println("Exception is here!!");
+					lgf.logfile(" Exception Caught");
+
+				}
 				
 				if(countvalue>0)
 				{
-					//close();
+					close();
 					JOptionPane.showMessageDialog(contentPane,  "Doctor Assigned:" + name1+"\nTimings Alloted: "+timings1," Successfully DONE..!", JOptionPane.INFORMATION_MESSAGE);
-//					AdminPage adminPage = new AdminPage();
-//					adminPage.setVisible(true);
+					PatientPage pp = new PatientPage(user_name);
+					pp.setVisible(true);
 				}
 				else
 				{
 					/*username.setText("");
 			
 					passwordField.setText("");*/
-					JOptionPane.showMessageDialog(contentPane, "Doctor Not Available..!", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(contentPane, "Doctor Not Available..! Please Choose Another Time!", "Error", JOptionPane.ERROR_MESSAGE);
+					PatientPage pp = new PatientPage(user_name);
+					pp.setVisible(true);
 				}
 			}
 		});
 		
 		btnBookAppointment.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnBookAppointment.setBounds(105, 293, 228, 28);
+		btnBookAppointment.setBounds(56, 293, 189, 28);
 		contentPane.add(btnBookAppointment);
+		//String username1;
+		JButton btnBack = new JButton("BACK");
+		btnBack.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnBack.setBounds(269, 293, 110, 26);
+		contentPane.add(btnBack);
+		
+		JLabel lblNewLabel_9 = new JLabel(timings);
+		lblNewLabel_9.setBounds(200, 197, 179, 14);
+		contentPane.add(lblNewLabel_9);
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				close();
+				CategoryPage cpage = new CategoryPage(username1);
+			}
+		});
+		
 	}
 }

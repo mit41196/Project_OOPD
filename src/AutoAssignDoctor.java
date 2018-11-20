@@ -30,22 +30,11 @@ public class AutoAssignDoctor extends JFrame {
 
 	private JPanel contentPane;
 	JComboBox comboBox;
+	Logfile lgf=new Logfile();
 
 	/**
 	 * Launch the application.
 	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					AutoAssignDoctor frame = new AutoAssignDoctor();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 
 	public void fillComboBox() throws ClassNotFoundException, SQLException
 	{
@@ -84,7 +73,7 @@ public class AutoAssignDoctor extends JFrame {
 		contentPane.add(lblDepartment);
 		
 		JLabel lblPreferredTime = new JLabel("Preferred Time");
-		lblPreferredTime.setBounds(10, 125, 78, 14);
+		lblPreferredTime.setBounds(10, 125, 124, 14);
 		contentPane.add(lblPreferredTime);
 		
 		JSpinner spinner = new JSpinner();
@@ -116,6 +105,14 @@ public class AutoAssignDoctor extends JFrame {
 				String name = "";
 				String username = "";
 				String doc_pos = "";
+				//Object time;
+				if(deptname.equals(""))
+				{
+					JOptionPane.showMessageDialog(null,"Please enter missing details.");
+				}
+				else
+				{
+				
 				try 
 				{
 					Class.forName("com.mysql.jdbc.Driver");
@@ -162,7 +159,9 @@ public class AutoAssignDoctor extends JFrame {
 						String assigned_doctor_username = (String)doctor_usernames.get(max_index);
 						s2.executeUpdate("Update patient SET doctor_username = '"+assigned_doctor_username+"' where uniqueId = '"+user_name+"' ");
 						s2.executeUpdate("Update doctor SET patients_count = '"+count+"' where username = '"+assigned_doctor_username+"'");
-						JOptionPane.showMessageDialog(contentPane, "Appointment Done!\n"+"Assigned Doctor:"+assigned_doctor, "Success", JOptionPane.INFORMATION_MESSAGE);	
+						JOptionPane.showMessageDialog(contentPane, "Appointment Done!\n"+"Assigned Doctor:"+assigned_doctor, "Success", JOptionPane.INFORMATION_MESSAGE);
+						PatientPage pp = new PatientPage(user_name);
+						pp.setVisible(true);
 					}
 					else
 					{
@@ -177,8 +176,12 @@ public class AutoAssignDoctor extends JFrame {
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+					System.out.println("Exception is here!!");
+					lgf.logfile(" Exception Caught");
+
 				}
 				
+			}
 			}
 		});
 		btnAutoassign.setBounds(144, 209, 105, 23);

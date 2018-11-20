@@ -18,7 +18,7 @@ import javax.swing.JButton;
 public class ViewDoctorProfile_Admin extends JFrame {
 
 	private JPanel contentPane;
-
+	Logfile lgf=new Logfile();
 	/**
 	 * Launch the application.
 	 */
@@ -74,6 +74,9 @@ public class ViewDoctorProfile_Admin extends JFrame {
 			catch(Exception e)
 			{
 				e.printStackTrace();
+				System.out.println("Exception is here!!");
+				lgf.logfile(" Exception Caught");
+
 					
 			}
 		
@@ -162,6 +165,9 @@ contentPane.setLayout(null);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					System.out.println("Exception is here!!");
+					lgf.logfile(" Exception Caught");
+
 				}
 				
 			}

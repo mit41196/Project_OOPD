@@ -17,6 +17,7 @@ import javax.swing.JButton;
 public class ViewPatientHistory extends JFrame {
 
 	private JPanel contentPane;
+	Logfile lgf=new Logfile();
 
 	/**
 	 * Launch the application.
@@ -56,6 +57,9 @@ public class ViewPatientHistory extends JFrame {
 		catch(Exception e1)
 		{
 			e1.printStackTrace();
+			System.out.println("Exception is here!!");
+			lgf.logfile(" Exception Caught");
+
 		}
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

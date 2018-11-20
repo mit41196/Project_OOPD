@@ -7,6 +7,7 @@ import javax.swing.border.EmptyBorder;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
+import com.mysql.jdbc.ResultSet;
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -49,6 +50,7 @@ public class RegisterDoctor extends JFrame {
 	private JPasswordField passwordField;
 	private JLabel lblUsername;
 	private JTextField usernameField;
+	Logfile lgf=new Logfile();
 
 	/**
 	 * Launch the application.
@@ -75,6 +77,34 @@ public class RegisterDoctor extends JFrame {
 		WindowEvent closeEvent = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
 		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(closeEvent);
 	}
+	private void fillComboBoxId()
+    {
+        try 
+        {
+            Class.forName("com.mysql.jdbc.Driver");
+        
+            Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
+            Statement st=c.createStatement();
+            ResultSet rs=(ResultSet) st.executeQuery("Select * from department");
+            while(rs.next())
+            {
+                String name = rs.getString("dept_name");
+                comboBox_category.addItem(name);
+                //System.out.println(name);
+            }
+            
+            System.out.println("query");
+            
+        }
+        catch(Exception e1)
+        {
+            e1.printStackTrace();
+            System.out.println("Exception is here!!");
+			lgf.logfile(" Exception Caught");
+
+        }
+    }
+	
 	/**
 	 * Create the frame.
 	 */
@@ -82,8 +112,10 @@ public class RegisterDoctor extends JFrame {
 	 * 
 	 */
 	public RegisterDoctor() {
+		comboBox_category = new JComboBox();
+		fillComboBoxId();
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 418);
+		setBounds(100, 100, 450, 455);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -157,12 +189,6 @@ public class RegisterDoctor extends JFrame {
 		lblCategorydepartment = new JLabel("Category/Department:");
 		contentPane.add(lblCategorydepartment, "2, 12, right, default");
 		
-		comboBox_category = new JComboBox();
-		comboBox_category.addItem("Dept1");
-		comboBox_category.addItem("Dept2");
-		comboBox_category.addItem("Dept3");
-		comboBox_category.addItem("Dept4");
-		comboBox_category.addItem("Dept5");
 		
 		contentPane.add(comboBox_category, "4, 12, fill, default");
 		
@@ -210,7 +236,7 @@ public class RegisterDoctor extends JFrame {
 				// TODO Auto-generated method stub
 				
 				String nameField = name.getText();
-				String password = passwordField.getText();
+				//String password = passwordField.getText();
 				String addressField = address.getText();
 				String contactField = contact.getText();
 				String emailField = email.getText();
@@ -228,6 +254,17 @@ public class RegisterDoctor extends JFrame {
 				String doctorPrecedenceField = (String)comboBox_doc_precedence.getSelectedItem();
 				String userField = usernameField.getText();
 				String passField = passwordField.getText();
+				
+				if(nameField.equals("")|| passField.equals("")|| addressField.equals("")||
+						contactField.equals("")|| emailField.equals("")||categoryField.equals("")||
+						doctypeField.equals("")||userField.equals("")||
+						doctorPrecedenceField.equals(""))
+				{
+					JOptionPane.showMessageDialog(null,"Please enter missing details.");
+				}
+				else
+				{
+				
 				try
 				{
 					Class.forName("com.mysql.jdbc.Driver");
@@ -236,28 +273,32 @@ public class RegisterDoctor extends JFrame {
 					s2.executeUpdate("Insert into doctor (name, address, contact, email, category, timings, doctor_position, username,patients_count,doctor_type) values ('"+nameField+"', '"+addressField+"', '"+contactField+"', '"+emailField+"', '"+categoryField+"', '"+timingField+"', '"+doctorPrecedenceField+"', '"+userField+"','"+countvalue+"','"+doctypeField+"')");
 					s2.executeUpdate("Insert into logindoctor (username, password) values ('"+userField+"', '"+passField+"')");
 //					s2.executeUpdate("Insert into "+categoryField+"(name, address, contact, email, category, scheduled_days, timings, doctor_position,passwordfield) values ('"+nameField+"', '"+addressField+"', '"+contactField+"', '"+emailField+"', '"+categoryField+"', '"+scheduleField+"', '"+timingField+"', '"+doctorPrecedenceField+"','"+password+"')");
+					JOptionPane.showMessageDialog(contentPane, "Doctor Registered Successfully...!","Success", JOptionPane.INFORMATION_MESSAGE);
 					name.setText("");
 					address.setText("");
 					passwordField.setText("");
 					contact.setText("");
 					email.setText("");
 					//scheduledDays.setText("");
+					usernameField.setText("");
 					timings.setText("");
 					comboBox_category.setSelectedItem(0);
 					comboBox_doc_precedence.setSelectedItem(0);
 					combobox_doc_type.setSelectedItem(0);
 					
 					
-					JOptionPane.showMessageDialog(contentPane, "Doctor Registered Successfully...!","Success", JOptionPane.INFORMATION_MESSAGE);
-				}	
+				}
 				catch (SQLException | ClassNotFoundException e1) 
 				{
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+					System.out.println("Exception is here!!");
+					lgf.logfile(" Exception Caught");
+
 				}
-				
 			}
-		});
+		}
+	});
 		btnBack = new JButton("Back");
 		
 		btnBack.addActionListener(new ActionListener() {

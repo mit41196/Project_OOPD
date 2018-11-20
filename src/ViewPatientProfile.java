@@ -19,6 +19,7 @@ import javax.swing.JButton;
 public class ViewPatientProfile extends JFrame {
 
 	private JPanel contentPane;
+	Logfile lgf=new Logfile();
 
 	/**
 	 * Launch the application.
@@ -57,7 +58,7 @@ public class ViewPatientProfile extends JFrame {
 		String location = "";
 		String username = "";
 		String department = "";
-		
+		System.out.println(user_name + "In view patient page");
 		try
 		{
 			Class.forName("com.mysql.jdbc.Driver");
@@ -80,8 +81,11 @@ public class ViewPatientProfile extends JFrame {
 		catch(Exception e1)
 		{
 			e1.printStackTrace();
+			System.out.println("Exception is here!!");
+			lgf.logfile(" Exception Caught");
+
 		}
-		
+		System.out.println(name + address + contact + email);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 468);
 		contentPane = new JPanel();
@@ -192,6 +196,7 @@ public class ViewPatientProfile extends JFrame {
 				// TODO Auto-generated method stub
 				close();
 				PatientPage pp = new PatientPage(user_name);
+				System.out.println(user_name);
 				pp.setVisible(true);
 				
 			}

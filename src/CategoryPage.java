@@ -22,30 +22,14 @@ public class CategoryPage extends JFrame {
 	private JPanel contentPane;
 	JList list;
 	DefaultListModel model;
+	String username;
+	Logfile lgf=new Logfile();
 	/**
 	 * Launch the application.
 	 */
 	
 	JComboBox comboBox_dept_name = new JComboBox();
-	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CategoryPage frame = new CategoryPage();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
-//	private void getSelectedItemfromJlist() 
-//	{
-//		
-//		
-//	}
 	private void fillComboBoxId()
 	{
 		try 
@@ -68,6 +52,9 @@ public class CategoryPage extends JFrame {
 		catch(Exception e1)
 		{
 			e1.printStackTrace();
+			System.out.println("Exception is here!!");
+			lgf.logfile(" Exception Caught");
+
 		}
 	}
 	
@@ -82,7 +69,7 @@ public class CategoryPage extends JFrame {
 			//System.out.println("adsdasd");
 			Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
 			Statement st=c.createStatement();
-			ResultSet rs=st.executeQuery("SELECT * FROM doctor WHERE category = '"+name+"'");
+			ResultSet rs=st.executeQuery("SELECT * FROM doctor WHERE category = '"+name+"' and patients_count > 0");
 			System.out.println(rs.getFetchSize());
 			while(rs.next())
 			{
@@ -91,13 +78,16 @@ public class CategoryPage extends JFrame {
 				model.addElement(hod);
 			}
 			list.setModel(model);
-			
+			System.out.println(username);
 			rs.close();
 			st.close();
 		}
 		catch(Exception e1)
 		{
 			e1.printStackTrace();
+			System.out.println("Exception is here!!");
+			lgf.logfile(" Exception Caught");
+
 		}
 	}
 
@@ -105,12 +95,14 @@ public class CategoryPage extends JFrame {
 	 * Create the frame.
 	 */
 	
-	public CategoryPage() {
+	public CategoryPage(String username) {
+		
 		fillComboBoxId();
 		model = new DefaultListModel();
 		 list = new JList();
 		 list.setVisible(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		 System.out.println(username);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -154,7 +146,7 @@ public class CategoryPage extends JFrame {
 		JButton btnView = new JButton("VIEW");
 
 		btnView.addActionListener(new ActionListener() {
-			
+			String username1;
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
@@ -163,7 +155,8 @@ public class CategoryPage extends JFrame {
 		            String s = (String) list.getSelectedValue();
 		            System.out.println("Value Selected: " + s);
 //		            SelectedDoctorProfileDetails details =  new SelectedDoctorProfileDetails(s);
-		            SelectedDoctorProfileDetails details = new SelectedDoctorProfileDetails(s);
+		            System.out.println(username1+"hello");
+		            SelectedDoctorProfileDetails details = new SelectedDoctorProfileDetails(s,username);
 		            details.setVisible(true);
 			}
 		});
@@ -176,6 +169,22 @@ public class CategoryPage extends JFrame {
 		lblCategory.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblCategory.setBounds(38, 82, 107, 14);
 		contentPane.add(lblCategory);
+		
+		JButton btnBack = new JButton("Back");
+		btnBack.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+
+				SearchDoctor sd = new SearchDoctor(username);
+				sd.setVisible(true);
+				
+			}
+		});
+		btnBack.setFont(new Font("Times New Roman", Font.BOLD, 13));
+		btnBack.setBounds(287, 216, 89, 23);
+		contentPane.add(btnBack);
 
 	}
 }

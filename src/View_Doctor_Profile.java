@@ -13,13 +13,16 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.Font;
 
 public class View_Doctor_Profile extends JFrame {
 
 	private JPanel contentPane;
-
+	JButton btnUpdate;
+	JButton btnDelete;
+	Logfile lgf=new Logfile();
 	/**
 	 * Launch the application.
 	 */
@@ -44,7 +47,7 @@ public class View_Doctor_Profile extends JFrame {
 	 * Create the frame.
 	 */
 	
-	public View_Doctor_Profile(String user_name) {
+	public View_Doctor_Profile(String user_name, int flag) {
 		
 		String name = "";
 		String address = "";
@@ -75,11 +78,15 @@ public class View_Doctor_Profile extends JFrame {
 				username = rs.getString("username");
 				timings = rs.getString("timings");
 				doctor_type = rs.getString("doctor_type");
+				timings = rs.getString("timings");
 			}
 		}
 		catch(Exception e1)
 		{
 			e1.printStackTrace();
+			System.out.println("Exception is here!!");
+			lgf.logfile(" Exception Caught");
+
 		}
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -132,10 +139,12 @@ public class View_Doctor_Profile extends JFrame {
 				List_Of_Patients lop = new List_Of_Patients(user_name);
 			}
 		});
-		btnBack.setBounds(56, 292, 117, 25);
+		btnBack.setBounds(182, 345, 117, 25);
 		contentPane.add(btnBack);
 		
-		JButton btnUpdate = new JButton("EDIT");
+		
+		btnUpdate = new JButton("EDIT");
+		
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				close();
@@ -144,9 +153,50 @@ public class View_Doctor_Profile extends JFrame {
 			}
 		});
 		
+		btnDelete = new JButton("Delete");
+		btnDelete.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				try
+				{
+					Class.forName("com.mysql.jdbc.Driver");
+					Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
+					Statement s2=c.createStatement();
+					s2.executeUpdate("Delete from doctor where username = '"+user_name+"' ");
+					View_Doctor_Profile vdp = new View_Doctor_Profile(user_name, 0);
+					vdp.setVisible(true);
+					JOptionPane.showMessageDialog(contentPane, "Deleted Successfully..!","Success", JOptionPane.INFORMATION_MESSAGE);
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					System.out.println("Exception is here!!");
+					lgf.logfile(" Exception Caught");
+
+				}
+				
+			}
+		});
 		
-		btnUpdate.setBounds(297, 292, 117, 25);
-		contentPane.add(btnUpdate);
+		if(flag == 0)
+		{
+			btnUpdate.setVisible(false);
+			btnDelete.setVisible(true);
+			btnDelete.setBounds(56, 346, 89, 23);
+			contentPane.add(btnDelete);
+		}
+		else
+		{
+			btnUpdate.setVisible(true);
+			btnDelete.setVisible(false);
+			btnUpdate.setBounds(182, 304, 117, 25);
+			contentPane.add(btnUpdate);
+		}
+		
+		
+		
 		
 		JLabel lblNewLabel_4 = new JLabel(name);
 		lblNewLabel_4.setFont(new Font("Times New Roman", Font.BOLD, 12));
@@ -173,11 +223,6 @@ public class View_Doctor_Profile extends JFrame {
 		lblNewLabel_8.setBounds(210, 143, 169, 14);
 		contentPane.add(lblNewLabel_8);
 		
-//		JLabel lblNewLabel_9 = new JLabel(scheduled_days);
-//		lblNewLabel_9.setFont(new Font("Times New Roman", Font.BOLD, 12));
-//		lblNewLabel_9.setBounds(207, 170, 172, 14);
-//		contentPane.add(lblNewLabel_9);
-//		
 		JLabel lblNewLabel_10 = new JLabel(doctor_position);
 		lblNewLabel_10.setFont(new Font("Times New Roman", Font.BOLD, 12));
 		lblNewLabel_10.setBounds(230, 224, 169, 14);

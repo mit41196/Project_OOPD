@@ -22,6 +22,7 @@ public class View_Patient_Details_Doctor extends JFrame {
 
 	private JPanel contentPane;
 	String name;
+	Logfile lgf=new Logfile();
 
 	/**
 	 * Launch the application.
@@ -69,6 +70,9 @@ public class View_Patient_Details_Doctor extends JFrame {
 		catch(Exception e1)
 		{
 			e1.printStackTrace();
+			System.out.println("Exception is here!!");
+			lgf.logfile(" Exception Caught");
+
 		}
 		
 		final String name1 = new String(name);
@@ -131,8 +135,7 @@ public class View_Patient_Details_Doctor extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				Diagnosis dg = new Diagnosis(name1, patient_id, user_name);
-				dg.setVisible(true);
-				
+				dg.setVisible(true);	
 			}
 		});
 		btn_Prescribe.setBounds(256, 227, 168, 23);
@@ -144,6 +147,7 @@ public class View_Patient_Details_Doctor extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				System.out.println(user_name);
 				List_Of_Patients lop = new List_Of_Patients(user_name);
 				lop.setVisible(true);
 				
@@ -165,6 +169,9 @@ public class View_Patient_Details_Doctor extends JFrame {
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					System.out.println("Exception is here!!");
+					lgf.logfile(" Exception Caught");
+
 				}
 				
 			}

@@ -7,8 +7,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -17,12 +19,14 @@ import java.sql.Statement;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 
 public class UpdateDepartment extends JFrame {
 
 	private JPanel contentPane;
 	JList list;
 	DefaultListModel model;
+	Logfile lgf=new Logfile();
 	/**
 	 * Launch the application.
 	 */
@@ -40,10 +44,17 @@ public class UpdateDepartment extends JFrame {
 				catch (Exception e) 
 				{
 					e.printStackTrace();
+					
 				}
 			}
 		});
 	}
+
+//	public void close()
+//	{
+//		WindowEvent closeEvent = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
+//		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(closeEvent);
+//	}
 
 	private void fillComboBoxId()
 	{
@@ -64,6 +75,9 @@ public class UpdateDepartment extends JFrame {
 		catch(Exception e1)
 		{
 			e1.printStackTrace();
+			System.out.println("Exception is here!!");
+			lgf.logfile(" Exception Caught");
+
 		}
 	}
 	
@@ -95,6 +109,9 @@ public class UpdateDepartment extends JFrame {
 		catch(Exception e1)
 		{
 			e1.printStackTrace();
+			System.out.println("Exception is here!!");
+			lgf.logfile(" Exception Caught");
+
 		}
 	}
 	/**
@@ -164,20 +181,55 @@ public class UpdateDepartment extends JFrame {
 				try 
 				{
 					Class.forName("com.mysql.jdbc.Driver");
-				
+					String doc_user = "";
 					Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
 					Statement st=c.createStatement();
-					st.executeUpdate("Update department SET dept_hod='"+selectedHod+"' where dept_name='"+selectedName+"'");
+					ResultSet rs = st.executeQuery("Select * from doctor where name = '"+selectedHod+"'");
+					while(rs.next())
+					{
+						doc_user = rs.getString("username");
+					}
+					st.executeUpdate("Update department SET dept_hod='"+selectedHod+"', dept_hod_username = '"+doc_user+"' where dept_name='"+selectedName+"'");
+					JOptionPane.showMessageDialog(contentPane, "HOD Assigned!", "Success", JOptionPane.INFORMATION_MESSAGE);
 				}
 				catch(Exception e1)
 				{
 					e1.printStackTrace();
+					System.out.println("Exception is here!!");
+					lgf.logfile(" Exception Caught");
+
 				}
 				
 			}
 		});
-		btnUpdate.setBounds(154, 206, 89, 23);
+		btnUpdate.setBounds(61, 216, 89, 23);
 		contentPane.add(btnUpdate);
+		
+		JButton btnBack = new JButton("Back");
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				//close();
+				AdminPage adminpage = new AdminPage();
+				adminpage.setVisible(true);
+				
+			}
+		});
+		btnBack.setBounds(212, 216, 89, 23);
+		contentPane.add(btnBack);
+		
+//		JButton btnBack = new JButton("BACK");
+//		btnBack.addActionListener(new ActionListener() {
+//			
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				// TODO Auto-generated method stub
+//				close();
+//				AdminPage adminpage = new AdminPage();
+//				adminpage.setVisible(true);
+//				
+//			}
+//		});
+		
 		
 	}
 }

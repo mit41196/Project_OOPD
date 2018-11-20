@@ -32,6 +32,7 @@ public class EditPatientProfile extends JFrame {
 	JComboBox dept_comboBox = new JComboBox();
 	JRadioButton rdbtnMale;
 	JRadioButton rdbtnFemale;
+	Logfile lgf=new Logfile();
 	/**
 	 * Launch the application.
 	 */
@@ -75,6 +76,9 @@ public class EditPatientProfile extends JFrame {
 		catch(Exception e1)
 		{
 			e1.printStackTrace();
+			System.out.println("Exception is here!!");
+			lgf.logfile(" Exception Caught");
+
 		}
 	}
 	
@@ -108,6 +112,9 @@ public class EditPatientProfile extends JFrame {
 		catch(Exception e1)
 		{
 			e1.printStackTrace();
+			System.out.println("Exception is here!!");
+			lgf.logfile(" Exception Caught");
+
 		}
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -184,6 +191,12 @@ public class EditPatientProfile extends JFrame {
 					updated_gender = rdbtnFemale.getText();
 				else if(rdbtnMale.isSelected())
 					updated_gender = rdbtnMale.getText();
+				if(updated_name.equals("")|| updated_address.equals("")|| updated_contact.equals("")||updated_email.equals("")||updated_department.equals(""))
+				{
+					JOptionPane.showMessageDialog(null,"Please enter missing details.");
+				}
+				else
+				{
 				
 				try 
 				{
@@ -200,8 +213,12 @@ public class EditPatientProfile extends JFrame {
 				catch(Exception e1)
 				{
 					e1.printStackTrace();
+					System.out.println("Exception is here!!");
+					lgf.logfile(" Exception Caught");
+
 				}
 				
+			}
 			}
 		});
 		btnUpdate.setBounds(238, 333, 89, 23);

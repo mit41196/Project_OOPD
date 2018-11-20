@@ -32,6 +32,7 @@ public class ViewDetails_Admin extends JFrame {
 	private JScrollPane scrollPane;
 	private JButton btnViewDoctor;
 	private JButton btnBack;
+	Logfile lgf=new Logfile();
 
 	/**
 	 * Launch the application.
@@ -70,6 +71,9 @@ public class ViewDetails_Admin extends JFrame {
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			System.out.println("Exception is here!!");
+			lgf.logfile(" Exception Caught");
+
 		}
 		Connection c = DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -129,11 +133,14 @@ public class ViewDetails_Admin extends JFrame {
 				{
 					ViewPatientProfile_Admin vppa;
 					try {
-						vppa = new ViewPatientProfile_Admin(selected_id);
+						vppa = new ViewPatientProfile_Admin(selected_id, false);
 						vppa.setVisible(true);
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+						System.out.println("Exception is here!!");
+						lgf.logfile(" Exception Caught");
+
 					}
 				}
 				else
@@ -145,6 +152,9 @@ public class ViewDetails_Admin extends JFrame {
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+						System.out.println("Exception is here!!");
+						lgf.logfile(" Exception Caught");
+
 					}
 					
 				}
@@ -174,6 +184,9 @@ public class ViewDetails_Admin extends JFrame {
 				{
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+					System.out.println("Exception is here!!");
+					lgf.logfile(" Exception Caught");
+
 				}	
 				
 			}
@@ -203,16 +216,20 @@ public class ViewDetails_Admin extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				Statement st;
+				
 				try 
 				{
 					st = c.createStatement();
-					ResultSet rs = st.executeQuery("Select uniqueId, name, doctor_username from patient");
+					ResultSet rs = st.executeQuery("Select uniqueId, name, doctor_username, location from patient");
 					table.setModel(DbUtils.resultSetToTableModel(rs));
 				} 
 				catch (SQLException e) 
 				{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					System.out.println("Exception is here!!");
+					lgf.logfile(" Exception Caught");
+
 				}
 				
 				

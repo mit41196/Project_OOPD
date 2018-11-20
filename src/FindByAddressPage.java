@@ -26,51 +26,14 @@ public class FindByAddressPage extends JFrame {
 	JList list;
 	DefaultListModel model;
 	private JTextField textField;
-	
+	Logfile lgf =new Logfile();
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					FindByAddressPage frame = new FindByAddressPage();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
-//	private void fillComboBoxId()
-//	{
-//		try 
-//		{
-//			Class.forName("com.mysql.jdbc.Driver");
-//		
-//			Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
-//			Statement st=c.createStatement();
-//			ResultSet rs=st.executeQuery("Select * from doctor");
-//			while(rs.next())
-//			{
-//				String name = rs.getString("address");
-//				comboBox.addItem(name);
-//			}
-//			System.out.println("query");
-//		}
-//		catch(Exception e1)
-//		{
-//			e1.printStackTrace();
-//		}
-//	}
 	
-	private void fillJListHod(JList list, String name)
+	private void fillJListHod(JList list, String address)
 	{
-		System.out.println(name);
+		System.out.println(address);
 
 		try 
 		{
@@ -79,7 +42,7 @@ public class FindByAddressPage extends JFrame {
 			System.out.println("adsdasd");
 			Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
 			Statement st=c.createStatement();
-			ResultSet rs=st.executeQuery("SELECT * FROM doctor WHERE address = '"+name+"'");
+			ResultSet rs=st.executeQuery("SELECT * FROM doctor WHERE address = '"+address+"'");
 			System.out.println(rs.getFetchSize());
 			while(rs.next())
 			{
@@ -96,10 +59,13 @@ public class FindByAddressPage extends JFrame {
 		catch(Exception e1)
 		{
 			e1.printStackTrace();
+			System.out.println("Exception is here!!");
+			lgf.logfile(" Exception Caught");
+
 		}
 	}
 
-	public FindByAddressPage() {
+	public FindByAddressPage(String username) {
 		//fillComboBoxId();
 		model = new DefaultListModel();
 		 list = new JList();
@@ -138,7 +104,7 @@ public class FindByAddressPage extends JFrame {
 //	            SelectedDoctorProfileDetails details =  new SelectedDoctorProfileDetails(s);
 	            else
 	            {
-	            	SelectedDoctorProfileDetails details = new SelectedDoctorProfileDetails(s);
+	            	SelectedDoctorProfileDetails details = new SelectedDoctorProfileDetails(s, username);
 	            	details.setVisible(true);
 	            }
 	            	
@@ -170,6 +136,21 @@ public class FindByAddressPage extends JFrame {
 		textField.setBounds(190, 76, 133, 23);
 		contentPane.add(textField);
 		textField.setColumns(10);
+		
+		JButton btnBack = new JButton("Back");
+		btnBack.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+				SearchDoctor sd = new SearchDoctor(username);
+				sd.setVisible(true);
+			}
+		});
+		btnBack.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnBack.setBounds(265, 216, 89, 23);
+		contentPane.add(btnBack);
 		
 	}
 

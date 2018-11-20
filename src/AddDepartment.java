@@ -5,6 +5,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -23,6 +25,7 @@ public class AddDepartment extends JFrame {
 	private JPanel contentPane;
 	private JTextField deptIdField;
 	private JTextField deptNameField;
+	Logfile lgf=new Logfile();
 
 	/**
 	 * Launch the application.
@@ -84,28 +87,58 @@ public class AddDepartment extends JFrame {
 		btnAdd.setBounds(146, 212, 106, 23);
 		btnAdd.addActionListener(new ActionListener() {
 			
-			
-			
+			int temp=0;
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				String did = deptIdField.getText();
 				String dname = deptNameField.getText();
 				String dhod = "";
-				
 				try
 				{
-					Class.forName("com.mysql.jdbc.Driver");
-					Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
-					Statement s2=c.createStatement();
-					s2.executeUpdate("Insert into department(dept_name, dept_id, dept_hod) values ('"+dname+"', '"+did+"', '"+dhod+"')");
+					if(dname.equals("")|| did.equals(""))
+					{
+						JOptionPane.showMessageDialog(null,"Please enter missing details.");
+						throw new Exception();
+					}
+					else
+					{
+						try
+						{
+							if(temp==1)
+							{
+							Class.forName("com.mysql.jdbc.Driver");
+							Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
+							Statement s2=c.createStatement();
+							s2.executeUpdate("Insert into department(dept_name, dept_id, dept_hod) values ('"+dname+"', '"+did+"', '"+dhod+"')");
+							JOptionPane.showMessageDialog(contentPane, "Department Successfully Inserted!", "Success", JOptionPane.INFORMATION_MESSAGE);
+							deptIdField.setText("");
+							deptNameField.setText("");
+							}
+							else
+							{
+								throw new Exception();
+								
+							}
+						}
+						catch(Exception e1)
+						{
+							e1.printStackTrace();
+							System.out.println("Exception is here!!");
+							lgf.logfile("Add Department Exception 1");
+						}
+					}
+					
+					
 				}
 				catch(Exception e1)
 				{
 					e1.printStackTrace();
+					System.out.println("Exception is here!!");
+					lgf.logfile("Add Department Exception 1");
 				}
-			}
-		});
+		}
+	});
 		contentPane.add(btnAdd);
 		
 		JButton btnBack = new JButton("Back");

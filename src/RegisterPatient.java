@@ -16,12 +16,16 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.lang.reflect.GenericDeclaration;
 
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 
 import java.sql.*;
+import java.util.regex.Pattern;
+
 import javax.swing.JComboBox;
 import javax.swing.JPasswordField;
 
@@ -34,11 +38,8 @@ public class RegisterPatient extends JFrame {
 	private JTextField email;
 	private JTextField bloodgroup;
 	private JLabel lblGender;
-	private JRadioButton rdbtnMale;
-	private JRadioButton rdbtnFemale;
 	private JLabel lblLocation;
-	private JRadioButton rdbtnOpd;
-	private JRadioButton rdbtnLocal;
+
 	private JButton btnRegister;
 	private JLabel lblPassword;
 	private JLabel lblDepartment;
@@ -46,9 +47,47 @@ public class RegisterPatient extends JFrame {
 	private JPasswordField passwordField;
 	private JButton btnBack;
 
+	ButtonGroup G = new ButtonGroup();
+	ButtonGroup G1 = new ButtonGroup();
+	private JRadioButton rdbtnMale;
+	private JRadioButton rdbtnFemale;
+	private JRadioButton rdbtnOpd;
+	private JRadioButton rdbtnLocal;
+	Logfile lgf=new Logfile();
+
 	/**
 	 * Launch the application.
 	 */
+	
+	private void fillComboBoxId()
+    {
+        try 
+        {
+            Class.forName("com.mysql.jdbc.Driver");
+        
+            Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
+            Statement st=c.createStatement();
+            ResultSet rs=st.executeQuery("Select * from department");
+            while(rs.next())
+            {
+                String name = rs.getString("dept_name");
+                comboBox_Department.addItem(name);
+                //System.out.println(name);
+            }
+            
+            System.out.println("query");
+            
+        }
+        catch(Exception e1)
+        {
+            e1.printStackTrace();
+            System.out.println("Exception is here!!");
+			lgf.logfile(" Exception Caught");
+
+        }
+    }
+
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -57,6 +96,9 @@ public class RegisterPatient extends JFrame {
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
+					//System.out.println("Exception is here!!");
+					//lgf.logfile(" Exception Caught");
+
 				}
 			}
 		});
@@ -73,8 +115,11 @@ public class RegisterPatient extends JFrame {
 	 * Create the frame.
 	 */
 	public RegisterPatient() {
+		comboBox_Department = new JComboBox();
+		fillComboBoxId();
+
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 432);
+		setBounds(100, 100, 450, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -84,6 +129,8 @@ public class RegisterPatient extends JFrame {
 				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("default:grow"),},
 			new RowSpec[] {
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
@@ -150,7 +197,6 @@ public class RegisterPatient extends JFrame {
 		bloodgroup = new JTextField();
 		contentPane.add(bloodgroup, "4, 12, fill, default");
 		bloodgroup.setColumns(10);
-		
 		lblGender = new JLabel("Gender:");
 		contentPane.add(lblGender, "2, 14");
 		
@@ -161,32 +207,29 @@ public class RegisterPatient extends JFrame {
 		contentPane.add(rdbtnFemale, "4, 16");
 		
 		lblLocation = new JLabel("Location:");
-		contentPane.add(lblLocation, "2, 18");
+		contentPane.add(lblLocation, "2, 20");
 		
 		rdbtnOpd = new JRadioButton("OPD");
-		contentPane.add(rdbtnOpd, "4, 18");
+		contentPane.add(rdbtnOpd, "4, 20");
 		
 		rdbtnLocal = new JRadioButton("LOCAL");
-		contentPane.add(rdbtnLocal, "4, 20");
+		contentPane.add(rdbtnLocal, "4, 22");
+		
+		G.add(rdbtnFemale);
+		G.add(rdbtnMale);
+		G1.add(rdbtnLocal);
+		G1.add(rdbtnOpd);
 		
 		lblPassword = new JLabel("Password:");
-		contentPane.add(lblPassword, "2, 22, right, default");
+		contentPane.add(lblPassword, "2, 24, right, default");
 		
 		passwordField = new JPasswordField();
-		contentPane.add(passwordField, "4, 22, fill, default");
+		contentPane.add(passwordField, "4, 24, fill, default");
 		
 		lblDepartment = new JLabel("Department:");
-		contentPane.add(lblDepartment, "2, 24, right, default");
+		contentPane.add(lblDepartment, "2, 26, right, default");
 		
-		comboBox_Department = new JComboBox();
-		
-		comboBox_Department.addItem("Dept1");
-		comboBox_Department.addItem("Dept2");
-		comboBox_Department.addItem("Dept3");
-		comboBox_Department.addItem("Dept4");
-		comboBox_Department.addItem("Dept5");
-		
-		contentPane.add(comboBox_Department, "4, 24, fill, default");
+		contentPane.add(comboBox_Department, "4, 26, fill, default");
 		
 	
 		btnRegister = new JButton("Register");
@@ -199,31 +242,61 @@ public class RegisterPatient extends JFrame {
 				String nameField = name.getText();
 				String addressField = address.getText();
 				String contactField = contact.getText();
+				//Integer contactField = Integer.parseInt(ctField);
 				String emailField = email.getText();
 				String bloodgroupField = bloodgroup.getText();
 				String password = passwordField.getText();
 				String departmentField = (String)comboBox_Department.getSelectedItem();
 				String locationField = null;
 				String genderField = null;
+				String room_status = ""; 
 				
 				if (rdbtnOpd.isSelected())
 					locationField = rdbtnOpd.getText();
-				else if(rdbtnLocal.isSelected())
+				else
 					locationField = rdbtnLocal.getText();
-				
+//				
 				if (rdbtnFemale.isSelected())
 					genderField = rdbtnFemale.getText();
-				else if(rdbtnMale.isSelected())
+				else
 					genderField = rdbtnMale.getText();
+//				
+
 				
-				String unique_Id = departmentField + "_" + contactField;
-				try
+		if(emailField.equals("") || addressField.equals("") || nameField.equals("") || contactField.equals("")|| genderField.equals("")|| bloodgroupField.equals("")||locationField.equals("")|| departmentField.equals("")||passwordField.equals(""))
+		{
+			JOptionPane.showMessageDialog(null,"Please enter the details.");
+		}
+		else
+		{
+	System.out.println(nameField + contactField + genderField + bloodgroupField + locationField + departmentField);
+	if(nameField.equals("") || contactField.equals("") || genderField.equals("") || bloodgroupField.equals("") || locationField.equals("") || departmentField.equals(""))
+	{
+		JOptionPane.showMessageDialog(contentPane, "Please Enter the Details!", "Error", JOptionPane.ERROR_MESSAGE);
+	}
+	else
+	{
+		String unique_Id = departmentField + "_" + contactField;
+			try
+			{
+				Class.forName("com.mysql.jdbc.Driver");
+				Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
+				Statement s2=c.createStatement();
+				if(locationField.equals("LOCAL"))
 				{
-					Class.forName("com.mysql.jdbc.Driver");
-					Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
-					Statement s2=c.createStatement();
-					s2.executeUpdate("Insert into patient(name, address, contact, email, bloodgroup, gender, location, department, uniqueId) values ('"+nameField+"', '"+addressField+"', '"+contactField+"', '"+emailField+"', '"+bloodgroupField+"', '"+genderField+"', '"+locationField+"', '"+departmentField+"', '"+unique_Id+"')");
+					ResultSet rs = s2.executeQuery("Select * from room where room_status = '"+"Not Allocated"+"' and department = '"+departmentField+"'");
+					String room_id = "";
+					while(rs.next())
+					{
+						room_id = rs.getString("room_id");
+					}
+					
+					System.out.println(room_id);
+					
+					s2.executeUpdate("Insert into patient(name, address, contact, email, bloodgroup, gender, location, department, uniqueId, room_id) values ('"+nameField+"', '"+addressField+"', '"+contactField+"', '"+emailField+"', '"+bloodgroupField+"', '"+genderField+"', '"+locationField+"', '"+departmentField+"', '"+unique_Id+"', '"+room_id+"')");
+					s2.executeUpdate("Update room SET room_status = '"+"Allocated"+"' where room_id = '"+room_id+"'");
 					s2.executeUpdate("Insert into loginpatient(uniqueId, password) values ('"+unique_Id+"', '"+password+"')");
+					JOptionPane.showMessageDialog(contentPane, "Successfully Registered!\n"+"Asigned Room:" + room_id , "Success", JOptionPane.INFORMATION_MESSAGE);
 					name.setText("");
 					address.setText("");
 					contact.setText("");
@@ -231,17 +304,36 @@ public class RegisterPatient extends JFrame {
 					bloodgroup.setText("");
 					comboBox_Department.setSelectedIndex(0);
 					passwordField.setText("");
-					
-					JOptionPane.showMessageDialog(contentPane, "Patient Registered Successfully...!\n" + "Patient ID:" + unique_Id,"Success", JOptionPane.INFORMATION_MESSAGE);
-				}	
+
+				}
+				else
+				{
+					if(locationField.equals("OPD"))
+					{
+						s2.executeUpdate("Insert into patient(name, address, contact, email, bloodgroup, gender, location, department, uniqueId, room_status) values ('"+nameField+"', '"+addressField+"', '"+contactField+"', '"+emailField+"', '"+bloodgroupField+"', '"+genderField+"', '"+locationField+"', '"+departmentField+"', '"+unique_Id+"', '"+"Not Allocated"+"')");
+						s2.executeUpdate("Insert into loginpatient(uniqueId, password) values ('"+unique_Id+"', '"+password+"')");
+						name.setText("");
+						address.setText("");
+						contact.setText("");
+						email.setText("");
+						bloodgroup.setText("");
+						comboBox_Department.setSelectedIndex(0);
+						passwordField.setText("");
+
+					}
+				}
+			}
 				catch (SQLException | ClassNotFoundException e1) 
 				{
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+						e1.printStackTrace();
+						System.out.println("Exception is here!!");
+						lgf.logfile(" Exception Caught");
+
 				}
-				
 			}
-		});
+		}}
+	});
 		
 		btnBack = new JButton("Back");
 		btnBack.addActionListener(new ActionListener() {
@@ -255,9 +347,9 @@ public class RegisterPatient extends JFrame {
 				
 			}
 		});
-		contentPane.add(btnBack, "2, 27");
+		contentPane.add(btnBack, "2, 29");
 		
-		contentPane.add(btnRegister, "4, 27");	
+		contentPane.add(btnRegister, "4, 29");	
 	}
 
 }

@@ -24,6 +24,7 @@ public class login_Patient extends JFrame {
 	private JPanel contentPane;
 	private JTextField username_Patient;
 	private JPasswordField passwordField_Patient;
+	Logfile lgf=new Logfile();
 
 	/**
 	 * Launch the application.
@@ -78,7 +79,6 @@ public class login_Patient extends JFrame {
 		contentPane.add(lblPassword);
 		
 		JButton btnSubmit = new JButton("Submit");
-		
 		btnSubmit.addActionListener(new ActionListener() {
 			
 			@Override
@@ -90,6 +90,12 @@ public class login_Patient extends JFrame {
 				String username = username_Patient.getText();
 				String pass = passwordField_Patient.getText();
 				System.out.println(username + pass);
+				if(username.equals("")|| pass.equals(""))
+				{
+					JOptionPane.showMessageDialog(null,"Please enter missing details.");
+				}
+				else
+				{	
 				try 
 				{
 					Class.forName("com.mysql.jdbc.Driver");
@@ -108,6 +114,9 @@ public class login_Patient extends JFrame {
 				{
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+					System.out.println("Exception is here!!");
+					lgf.logfile(" Exception Caught");
+
 				}
 				System.out.println(userId + password + " " + username + pass);
 				if(username.equals(userId) && pass.equals(password))
@@ -122,6 +131,7 @@ public class login_Patient extends JFrame {
 					passwordField_Patient.setText("");
 					JOptionPane.showMessageDialog(contentPane, "Invalid Credentials!!","Error", JOptionPane.ERROR_MESSAGE);
 				}
+			}
 			}
 		});
 		

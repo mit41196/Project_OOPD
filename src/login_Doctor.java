@@ -25,6 +25,7 @@ public class login_Doctor extends JFrame {
 	private JPanel contentPane;
 	private JTextField username_Doctor;
 	private JPasswordField passwordField_Doctor;
+	Logfile lgf=new Logfile();
 
 	/**
 	 * Launch the application.
@@ -88,49 +89,98 @@ public class login_Doctor extends JFrame {
 				String user_name = username_Doctor.getText();
 				String userId ="";
 				String pass = "";
+				
 						
 				System.out.println(user_name + password);
+				if(user_name.equals("")|| password.equals(""))
+				{
+					JOptionPane.showMessageDialog(null,"Please enter missing details.");
+				}
+				else
+				{	
+			
 				try 
 				{
 					Class.forName("com.mysql.jdbc.Driver");
 				
 					Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
 					Statement st=c.createStatement();
+					String user = "";
 					ResultSet rs=st.executeQuery("Select * from logindoctor where username = '"+user_name+"'");
+					
 					while(rs.next())
 					{
 						userId = rs.getString("username");
 						pass = rs.getString("password");
 					}
+					
+					ResultSet rs1=st.executeQuery("Select * from department where dept_hod_username = '"+user_name+"'");
+					while(rs1.next())
+					{
+						user = rs1.getString("dept_hod_username");
+					}
+
+					System.out.println(userId + pass);
+					if(user_name.equals(userId) && pass.equals(password))
+					{
+						if(!user.equals(""))
+						{
+							close();
+							HoDPage hodp = new HoDPage(user_name);
+							hodp.setVisible(true);
+						}
+						else
+						{
+							close();
+//							Doctor_Home dh = new Doctor_Home(user_name);
+//							dh.setVisible(true);
+							List_Of_Patients lop = new List_Of_Patients(user_name);
+							lop.setVisible(true);
+						}
+						
+					}
+					else
+					{
+						username_Doctor.setText("");
+						passwordField_Doctor.setText("");
+						JOptionPane.showMessageDialog(contentPane, "Invalid Credentials!!","Error", JOptionPane.ERROR_MESSAGE);
+					}
+					
 				}
 				catch(Exception ex)
 				{
 					ex.printStackTrace();
+					System.out.println("Exception is here!!");
+					lgf.logfile(" Exception Caught");
+
 				}
-				System.out.println(userId + pass);
-				if(user_name.equals(userId) && pass.equals(password))
-				{
-					close();
-//					Doctor_Home dh = new Doctor_Home(user_name);
-//					dh.setVisible(true);
-					List_Of_Patients lop = new List_Of_Patients(user_name);
-					lop.setVisible(true);
-				}
-				else
-				{
-					username_Doctor.setText("");
-					passwordField_Doctor.setText("");
-					JOptionPane.showMessageDialog(contentPane, "Invalid Credentials!!","Error", JOptionPane.ERROR_MESSAGE);
-				}
+				
+			}
 			}
 		});
 		
-		btnSubmit.setBounds(168, 214, 89, 23);
+		btnSubmit.setBounds(82, 211, 89, 23);
 		contentPane.add(btnSubmit);
 		
 		passwordField_Doctor = new JPasswordField();
 		passwordField_Doctor.setBounds(136, 160, 235, 20);
 		contentPane.add(passwordField_Doctor);
+		
+		JButton btnBack = new JButton("Back");
+		btnBack.setBounds(246, 211, 89, 23);
+		btnBack.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				close();
+				start s = new start();
+				s.setVisible(true);
+				
+			}
+		});
+		
+		contentPane.add(btnBack);
 	}
 
 }

@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 public class PatientPage extends JFrame {
 	private JPanel contentPane;
 
+	Logfile lgf=new Logfile(); 
 	/**
 	 * Launch the application.
 	 */
@@ -29,7 +30,7 @@ public class PatientPage extends JFrame {
 //			}
 //		});
 //	}
-	
+	String username;
 	public void close()
 	{
 		WindowEvent closeEvent = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
@@ -39,9 +40,9 @@ public class PatientPage extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public PatientPage(String user_name) {
+	public PatientPage(String username) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 358);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -57,12 +58,12 @@ public class PatientPage extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				//close();
-				SearchDoctor searchdoctor = new SearchDoctor();
+				SearchDoctor searchdoctor = new SearchDoctor(username);
 				searchdoctor.setVisible(true);
 			}
 		});
 		
-		btnSearchDoctor.setBounds(61, 79, 297, 33);
+		btnSearchDoctor.setBounds(61, 63, 297, 33);
 		contentPane.add(btnSearchDoctor);
 		
 		JButton viewYourProfile = new JButton("View Profile");
@@ -71,13 +72,14 @@ public class PatientPage extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				ViewPatientProfile vpp = new ViewPatientProfile(user_name);
+				System.out.println(username + "IN Patient page");
+				ViewPatientProfile vpp = new ViewPatientProfile(username);
 				vpp.setVisible(true);
 			}
 		});
 		
 		
-		viewYourProfile.setBounds(61, 123, 297, 30);
+		viewYourProfile.setBounds(61, 107, 297, 30);
 		contentPane.add(viewYourProfile);
 		
 		JButton btnLogout = new JButton("Logout");
@@ -92,7 +94,7 @@ public class PatientPage extends JFrame {
 				
 			}
 		});
-		btnLogout.setBounds(61, 164, 297, 30);
+		btnLogout.setBounds(61, 148, 297, 30);
 		contentPane.add(btnLogout);
 		
 		JButton btnAutoAssignDoctor = new JButton("Auto Assign Doctor");
@@ -103,21 +105,40 @@ public class PatientPage extends JFrame {
 				// TODO Auto-generated method stub
 				AutoAssignDoctor aad;
 				try {
-					aad = new AutoAssignDoctor(user_name);
+					aad = new AutoAssignDoctor(username);
 					aad.setVisible(true);
 				} catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+					System.out.println("Exception is here!!");
+					lgf.logfile(" Exception Caught");
+
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+					System.out.println("Exception is here!!");
+					lgf.logfile(" Exception Caught");
+
 				}
 				
 				
 			}
 		});
-		btnAutoAssignDoctor.setBounds(61, 205, 297, 33);
+		btnAutoAssignDoctor.setBounds(61, 189, 297, 33);
 		contentPane.add(btnAutoAssignDoctor);
+		
+		JButton btnBack = new JButton("BACK");
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				close();
+				login_Patient lp = new login_Patient();
+				lp.setVisible(true);
+				
+			}
+		});
+		
+		btnBack.setBounds(161, 255, 89, 23);
+		contentPane.add(btnBack);
 	}
 
 }

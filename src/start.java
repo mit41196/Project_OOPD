@@ -13,6 +13,7 @@ import java.awt.Toolkit;
 public class start extends JFrame {
 
 	private JPanel contentPane;
+	Logfile lgf=new Logfile();
 
 	/**
 	 * Launch the application.
@@ -31,6 +32,7 @@ public class start extends JFrame {
 				catch (Exception e) 
 				{
 					e.printStackTrace();
+					
 				}
 			}
 		});

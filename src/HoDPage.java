@@ -31,7 +31,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 
-public class List_Of_Patients extends JFrame {
+public class HoDPage extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table_1;
@@ -66,7 +66,7 @@ public class List_Of_Patients extends JFrame {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection c=DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
 			Statement s2=c.createStatement();
-			ResultSet rs = s2.executeQuery("Select uniqueId, name, location, status from patient where doctor_username = '"+user_name+"' and status = '"+"Untreated"+"'");
+			ResultSet rs = s2.executeQuery("Select uniqueId, name, location from patient where doctor_username = '"+user_name+"'");
 			table.setModel(DbUtils.resultSetToTableModel(rs));
 //			while(rs.next())
 //			{
@@ -96,10 +96,10 @@ public class List_Of_Patients extends JFrame {
 	public boolean isCellEditable(int row, int column) {
         return false;
     }
-	public List_Of_Patients(String user_name) {
+	public HoDPage(String user_name) {
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(28, 38, 372, 162);
+		scrollPane.setBounds(28, 38, 372, 193);
 
 		
 		table_1 = new JTable();
@@ -154,7 +154,7 @@ public class List_Of_Patients extends JFrame {
 		
 		 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 307);
+		setBounds(100, 100, 450, 351);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -177,7 +177,7 @@ public class List_Of_Patients extends JFrame {
 				sorter.setSortKeys(sortKeys);
 			}
 		});
-		btnSort.setBounds(286, 222, 114, 25);
+		btnSort.setBounds(286, 276, 114, 25);
 		contentPane.add(btnSort);
 		
 		JButton btnBack = new JButton("LOGOUT");
@@ -207,7 +207,7 @@ public class List_Of_Patients extends JFrame {
 			
 			
 		});
-		btnLoadData.setBounds(170, 222, 91, 25);
+		btnLoadData.setBounds(160, 276, 91, 25);
 		contentPane.add(btnLoadData);
 		
 		
@@ -227,7 +227,7 @@ public class List_Of_Patients extends JFrame {
 				sorter.setSortKeys(sortKeys);
 			}
 		});
-		btn_Sort_Type.setBounds(28, 223, 113, 23);
+		btn_Sort_Type.setBounds(28, 278, 113, 23);
 		contentPane.add(btn_Sort_Type);
 		
 		JButton btnViewProfile = new JButton("View Profile");
@@ -236,12 +236,26 @@ public class List_Of_Patients extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				View_Doctor_Profile vdp = new View_Doctor_Profile(user_name, 1);
+				View_Doctor_Profile vdp = new View_Doctor_Profile(user_name, 0);
 				vdp.setVisible(true);
 				
 			}
 		});
 		btnViewProfile.setBounds(28, 8, 113, 23);
 		contentPane.add(btnViewProfile);
+		
+		JButton btnAdminResponsibility = new JButton("Admin Responsibility");
+		btnAdminResponsibility.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				AdminHoD ahd = new AdminHoD(user_name);
+				ahd.setVisible(true);
+				
+			}
+		});
+		btnAdminResponsibility.setBounds(135, 242, 154, 23);
+		contentPane.add(btnAdminResponsibility);
 	}
 }

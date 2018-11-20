@@ -27,9 +27,11 @@ public class Edit_Doctor extends JFrame {
 	private JTextField contactField;
 	private JTextField emailField;
 	private JTextField daysField;
+	private JTextField timingsField;
 	private JTextField textField_5;
 	JComboBox dept = new JComboBox();
 	JComboBox doctor_precedence = new JComboBox();
+	Logfile lgf=new Logfile();
 
 	/**
 	 * Launch the application.
@@ -73,6 +75,9 @@ public class Edit_Doctor extends JFrame {
 		catch(Exception e1)
 		{
 			e1.printStackTrace();
+			System.out.println("Exception is here!!");
+			lgf.logfile(" Exception Caught");
+
 		}
 	}
 	
@@ -86,6 +91,7 @@ public class Edit_Doctor extends JFrame {
 		String doctor_position = "";
 		String username = "";
 		//String scheduled_days = "";
+		String timings = "";
 		
 		try
 		{
@@ -103,14 +109,17 @@ public class Edit_Doctor extends JFrame {
 				doctor_position = rs.getString("doctor_position");
 				//scheduled_days = rs.getString("scheduled_days");
 				username = rs.getString("username");
+				timings = rs.getString("timings");
 			}
 		}
 		catch(Exception e1)
 		{
 			e1.printStackTrace();
+			System.out.println("Exception is here!!");
+			lgf.logfile(" Exception Caught");
+
 		}
-		
-		
+	
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 517);
 		contentPane = new JPanel();
@@ -158,7 +167,7 @@ public class Edit_Doctor extends JFrame {
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				close();
-				View_Doctor_Profile vdp =  new View_Doctor_Profile(user_name);
+				View_Doctor_Profile vdp =  new View_Doctor_Profile(user_name, 1);
 				vdp.setVisible(true);
 			}
 		});
@@ -175,9 +184,16 @@ public class Edit_Doctor extends JFrame {
 				String updated_address = addressField.getText();
 				String updated_contact = contactField.getText();
 				String updated_email = emailField.getText();
+				//String updated_timings = timingsField.getText();
 				
 				String updated_category = (String)dept.getSelectedItem();
 				String updated_position = (String)doctor_precedence.getSelectedItem();
+				if(updated_name.equals("")|| updated_address.equals("")|| updated_contact.equals("")||updated_email.equals(""))
+				{
+					JOptionPane.showMessageDialog(null,"Please enter missing details.");
+				}
+				else
+				{
 				
 				try 
 				{
@@ -191,10 +207,15 @@ public class Edit_Doctor extends JFrame {
 				catch(Exception e1)
 				{
 					e1.printStackTrace();
+					System.out.println("Exception is here!!");
+					lgf.logfile(" Exception Caught");
+
 				}
 				
 			}
+			}
 		});
+		
 		btnUpdate.setBounds(285, 293, 117, 25);
 		contentPane.add(btnUpdate);
 		

@@ -21,6 +21,7 @@ public class login_Admin extends JFrame {
 	private JPanel contentPane;
 	private JTextField username;
 	private JPasswordField passwordField;
+	Logfile lgf=new Logfile();
 	
 
 	/**

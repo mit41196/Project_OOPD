@@ -8,6 +8,8 @@ import javax.swing.border.EmptyBorder;
 import net.proteanit.sql.DbUtils;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +23,10 @@ import javax.swing.JButton;
 public class ViewPatientProfile_Admin extends JFrame {
 
 	private JPanel contentPane;
+	Logfile lgf=new Logfile();
+	
+	JButton btnReassignmentDoctor;
+	JButton btnDischargePatient_1;
 
 	/**
 	 * Launch the application.
@@ -42,7 +48,7 @@ public class ViewPatientProfile_Admin extends JFrame {
 	 * Create the frame.
 	 * @throws SQLException 
 	 */
-	public ViewPatientProfile_Admin(String patient_id) throws SQLException {
+	public ViewPatientProfile_Admin(String patient_id, Boolean flag) throws SQLException {
 		Connection c = DriverManager.getConnection("jdbc:mysql://localhost/oopd","root","root");
 		String name = "";
 		String unique_id = "";
@@ -53,6 +59,7 @@ public class ViewPatientProfile_Admin extends JFrame {
 		String gender = "";
 		String location = "";
 		String department = "";
+		String patienttype = "";
 		try
 		{
 			Class.forName("com.mysql.jdbc.Driver");
@@ -71,16 +78,22 @@ public class ViewPatientProfile_Admin extends JFrame {
 				department = rs.getString("department");
 				gender = rs.getString("gender");
 				location = rs.getString("location");
+				patienttype = rs.getString("patient_type");
 			}
 		}
+		
 			// TODO Auto-generated catch block
 			catch(Exception e)
 			{
 				e.printStackTrace();
+				System.out.println("Exception is here!!");
+				lgf.logfile(" Exception Caught");
+
 					
 			}
 		
-		
+		final String name1 = new String(name);
+		//final String patienttype1 = new String(patienttype);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 400);
 		contentPane = new JPanel();
@@ -162,27 +175,61 @@ public class ViewPatientProfile_Admin extends JFrame {
 		contentPane.add(lblNewLabel_10);
 		
 		JButton btnBack = new JButton("Back");
+		btnBack.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnBack.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				ViewDetails_Admin vda;
-				try {
-					vda = new ViewDetails_Admin();
-					vda.setVisible(true);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if(!flag)
+				{
+					ViewDetails_Admin vda;
+					try {
+						vda = new ViewDetails_Admin();
+						vda.setVisible(true);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						System.out.println("Exception is here!!");
+						lgf.logfile(" Exception Caught");
+
+					}
+				}
+				else
+				{
+					try {
+						DischargePatient dp = new DischargePatient();
+						dp.setVisible(true);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						System.out.println("Exception is here!!");
+						lgf.logfile(" Exception Caught");
+
+					}
 				}
 				
 				
 			}
 		});
-		btnBack.setBounds(71, 297, 89, 23);
+		btnBack.setBounds(10, 297, 69, 23);
 		contentPane.add(btnBack);
 		
-		JButton btnReassignmentDoctor = new JButton("ReAssignment Doctor");
+		
+//		if(flag)
+//		{
+//			btnReassignmentDoctor.setVisible(false);
+//			btnDischargePatient_1.setVisible(true);
+//			
+//		}
+//		else
+//		{
+//			btnDischargePatient_1.setVisible(false);
+//			btnReassignmentDoctor.setVisible(true);
+//		}
+//		
+		btnReassignmentDoctor = new JButton("ReAssignment Doctor");
+		btnReassignmentDoctor.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnReassignmentDoctor.addActionListener(new ActionListener() {
 			
 			@Override
@@ -196,15 +243,60 @@ public class ViewPatientProfile_Admin extends JFrame {
 					} catch (ClassNotFoundException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+						System.out.println("Exception is here!!");
+						lgf.logfile(" Exception Caught");
+
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					}
-					
+						System.out.println("Exception is here!!");
+						lgf.logfile(" Exception Caught");
+
+					}		
 			}
 		});
-		btnReassignmentDoctor.setBounds(234, 297, 159, 23);
+		btnReassignmentDoctor.setBounds(89, 297, 169, 23);
 		contentPane.add(btnReassignmentDoctor);
-	}
+		
+		btnDischargePatient_1 = new JButton("Discharge Patient");
+		btnDischargePatient_1.setFont(new Font("Tahoma", Font.BOLD, 11));
+		btnDischargePatient_1.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				try
+				{
+					Class.forName("com.mysql.jdbc.Driver");
+					Statement st;
+					st = c.createStatement();
+					int rs = st.executeUpdate("Delete from patient where uniqueId = '"+patient_id+"'");
+					int rs1 = st.executeUpdate("Delete from loginpatient where uniqueId = '"+patient_id+"'");
+					System.out.println(rs);
+					
+				}
+				catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					System.out.println("Exception is here!!");
+					lgf.logfile(" Exception Caught");
 
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					System.out.println("Exception is here!!");
+					lgf.logfile(" Exception Caught");
+
+				}	
+				JOptionPane.showMessageDialog(contentPane, "DISCHARGED DONE of...!\n" + name1,"Success", JOptionPane.INFORMATION_MESSAGE);		
+				//System.out.println(rs);
+				
+		}
+	});
+	
+		btnDischargePatient_1.setBounds(268, 297, 156, 23);
+		contentPane.add(btnDischargePatient_1);
+			
+	}
 }
+
